@@ -3,6 +3,7 @@
     <img alt="Vue logo" src="./assets/ita_logo.png">
     <HelloWorld msg="IT Alliance Portal"/>
   </div>
+  <!--hello-->
 </template>
 
 <script>
@@ -24,5 +25,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  
 }
 </style>
