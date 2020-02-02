@@ -9,13 +9,20 @@
       <span>
         <button>View Projects</button>
       </span>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <h1>##LOGIN PAGE##</h1>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "login",
   props: {
     msg: String
   }
