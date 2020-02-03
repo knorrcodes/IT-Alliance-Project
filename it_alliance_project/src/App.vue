@@ -1,13 +1,12 @@
 <template>
-  <div id="app">
+  <div class="background" id="app">
     <img alt="Vue logo" src="./assets/ita_logo.png" />
-    <login msg="IT Alliance Portal" />
+    <login />
   </div>
-  <!--hello-->
 </template>
 
 <script>
-import login from "./components/login.vue";
+import login from "@/component/list_page.vue";
 
 export default {
   name: "app",

@@ -3,19 +3,16 @@
     <h1>{{ msg }}</h1>
 
     <div class="homeButton">
-      <span>
-        <button>Create New Project</button>
-      </span>
-      <span>
-        <button>View Projects</button>
-      </span>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
       <br />
       <h1>##LOGIN PAGE##</h1>
+      <br />
+      <label for="fname">First Name:</label>
+      <input type="text" id="fname" class="ml-1" />
+      <br />
+      <label for="lname">Last Name:</label>
+      <input type="text" id="lname" class="mt-1 ml-1" />
+      <br />
+      <button type="submit" class="mt-1">Submit</button>
     </div>
   </div>
 </template>
@@ -29,7 +26,7 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
 h3 {
   margin: 40px 0 0;

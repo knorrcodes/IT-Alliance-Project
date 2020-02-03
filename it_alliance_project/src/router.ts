@@ -1,18 +1,20 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
-import list_page from "@/component/list_page.vue"
+import Router from "vue-router";
+import login from "@/component/login.vue";
+import mainPage from "@/component/mainPage.vue";
 
-Vue.use(VueRouter);
+Vue.use(Router);
 
-export default new VueRouter({
+export default new Router({
     mode: "history",
     base: process.env.BASE_URL,
-    routes: [
-        {
-            path: "/list_page",
-            name: "list_page",
-            component: list_page
-        },
-
-    ]
+    routes: [{
+        path: '/',
+        component: login
+    },
+    {
+        path: '/mainpage',
+        component: mainPage
+    }
+    ],
 });
