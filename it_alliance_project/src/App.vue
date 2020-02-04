@@ -1,15 +1,24 @@
 <template>
   <div class="background" id="app">
+    <div class="row">
+      <div class="col-10"></div>
+      <div class="col-2">
+        <!--<router-link to="@/component/login.vue" tag="button">Log In</router-link>-->
+        <router-link to="/login'}" event='click'>
+          <button type="submit">Log In</button>
+        </router-link>
+      </div>
+    </div>
     <img alt="Vue logo" src="./assets/ita_logo.png" />
     <login />
   </div>
 </template>
 
 <script>
-import login from "@/component/list_page.vue";
+import login from "@/component/mainPage.vue";
 
 export default {
-  name: "app",
+  name: "App",
   components: {
     login
   }
