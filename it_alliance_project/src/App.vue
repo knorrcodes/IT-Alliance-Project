@@ -18,7 +18,7 @@
 import login from "@/component/mainPage.vue";
 
 export default {
-  name: "App",
+  name: "app",
   components: {
     login
   }
