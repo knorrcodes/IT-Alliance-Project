@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="mainPage">
     <br />
     <h1 class="text-center">##MAIN PAGE##</h1>
     <div class="row">

@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div class="listPage">
     <br />
-    <h1>##LIST PAGE##</h1>
+    <h1 class="text-center">##LIST PAGE##</h1>
 
-    <h2>SEMERSTER 1</h2>
+    <h2>SEMESTER 1</h2>
     <ul>
       <li>Project 1</li>
       <li>Project 2</li>
       <li>Project 3</li>
     </ul>
-    <h2>SEMERSTER 2</h2>
+    <h2>SEMESTER 2</h2>
     <ul>
       <li>Project 1</li>
       <li>Project 2</li>
@@ -21,7 +21,7 @@
 <script>
 import { Vue } from "vue-property-decorator";
 
-export default class list_page extends Vue {}
+export default class listPage extends Vue {}
 </script>
 
 <style lang="scss" scoped>

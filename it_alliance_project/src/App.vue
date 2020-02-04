@@ -1,26 +1,43 @@
 <template>
   <div class="background" id="app">
     <div class="row">
-      <div class="col-10"></div>
       <div class="col-2">
-        <!--<router-link to="@/component/login.vue" tag="button">Log In</router-link>-->
-        <router-link to="/login'}" event='click'>
+        <router-link to="/mainPage" event='click'>
+          <button type="submit">Home</button>
+          <!--<mainPage />-->
+        </router-link>
+      </div>
+      <div class="col-3"></div>
+      <div class="col-2">
+        <router-link to="/listPage" event='click'>
+          <button type="submit">List</button>
+          <!--<listPage />-->
+        </router-link>
+      </div>
+      <div class="col-3"></div>
+      <div class="col-2">
+        <router-link to="/login" event='click'>
           <button type="submit">Log In</button>
+          <!--<login />-->
         </router-link>
       </div>
     </div>
     <img alt="Vue logo" src="./assets/ita_logo.png" />
-    <login />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import login from "@/component/mainPage.vue";
+/*import list_page from "@/component/listPage.vue"
+import login from "@/component/login.vue";
+import mainPage from "@/component/mainPage.vue";*/
 
 export default {
   name: "app",
   components: {
-    login
+    /*login,
+    listPage,
+    mainPage*/
   }
 };
 </script>
