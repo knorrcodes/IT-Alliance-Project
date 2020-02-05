@@ -19,10 +19,12 @@
 </template>
 
 <script>
-import { Vue } from "vue-property-decorator";
+/*import { Vue } from "vue-property-decorator";*/
 
-export default class listPage extends Vue {}
+export default /*class listPage extends Vue*/ {
+  name: "listPage"
+}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 </style>

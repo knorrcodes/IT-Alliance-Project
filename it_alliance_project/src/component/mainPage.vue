@@ -17,9 +17,11 @@
 </template>
 
 <script>
-import { Vue } from "vue-property-decorator";
+/*import { Vue } from "vue-property-decorator";*/
 
-export default class mainPage extends Vue {}
+export default /*class mainPage extends Vue*/ {
+  name: "mainPage"
+}
 </script>
 
 <style scoped>

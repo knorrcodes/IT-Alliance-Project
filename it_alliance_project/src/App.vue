@@ -28,7 +28,7 @@
 </template>
 
 <script>
-/*import list_page from "@/component/listPage.vue"
+/*import listPage from "@/component/listPage.vue"
 import login from "@/component/login.vue";
 import mainPage from "@/component/mainPage.vue";*/
 
