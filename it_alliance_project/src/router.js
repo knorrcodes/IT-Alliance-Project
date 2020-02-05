@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import mainPage from '@/component/mainPage'
-import login from '@/component/login'
 import listPage from '@/component/listPage'
+import login from '@/component/login'
+import mainPage from '@/component/mainPage'
 
 Vue.use(Router);
 
@@ -12,13 +12,13 @@ export default new Router({
     routes: [{
             path: '/',
             redirect: {
-                name: "mainPage"
+                name: 'mainPage'
             }
         },
         {
-            path: '/mainpage',
-            name: 'mainPage',
-            component: mainPage
+            path: '/listPage',
+            name: 'listPage',
+            component: listPage
         },
         {
             path: '/login',
@@ -26,9 +26,9 @@ export default new Router({
             component: login
         },
         {
-            path: '/listPage',
-            name: 'listPage',
-            component: listPage
+            path: '/mainPage',
+            name: 'mainPage',
+            component: mainPage
         }
     ],
 });

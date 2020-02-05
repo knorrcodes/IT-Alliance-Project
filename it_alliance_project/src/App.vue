@@ -2,21 +2,21 @@
   <div class="background" id="app">
     <div class="row">
       <div class="col-2">
-        <router-link to="/mainPage" event='click'>
+        <router-link :to="{ name: 'mainPage' }">
           <button type="submit">Home</button>
           <!--<mainPage />-->
         </router-link>
       </div>
       <div class="col-3"></div>
       <div class="col-2">
-        <router-link to="/listPage" event='click'>
+        <router-link to="/listPage">
           <button type="submit">List</button>
           <!--<listPage />-->
         </router-link>
       </div>
       <div class="col-3"></div>
       <div class="col-2">
-        <router-link to="/login" event='click'>
+        <router-link to="/login">
           <button type="submit">Log In</button>
           <!--<login />-->
         </router-link>
@@ -34,11 +34,11 @@ import mainPage from "@/component/mainPage.vue";*/
 
 export default {
   name: "app",
-  components: {
-    /*login,
+  /*components: {
+    login,
     listPage,
-    mainPage*/
-  }
+    mainPage
+  }*/
 };
 </script>
 
