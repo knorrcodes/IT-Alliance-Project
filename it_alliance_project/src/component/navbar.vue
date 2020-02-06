@@ -1,7 +1,7 @@
 <template>
     <div class="navbar">
         <b-navbar toggleable="lg" type="dark" variant="info">
-            <b-navbar-brand href="#">NavBar</b-navbar-brand>
+            <b-navbar-brand href="#">ITA Portal</b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
