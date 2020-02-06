@@ -4,15 +4,13 @@
 
     <div class="homeButton">
       <br />
-      <h1>##LOGIN PAGE##</h1>
       <br />
-      <label for="fname">First Name:</label>
+      <label for="fname">Username:</label>
       <input type="text" id="fname" class="ml-1" />
       <br />
-      <label for="lname">Last Name:</label>
-      <input type="text" id="lname" class="mt-1 ml-1" />
+      <label for="lname">Password:</label>
+      <input type="password" id="lname" class="mt-1 ml-1" />
       <br />
-      <button type="submit" class="mt-1">Submit</button>
     </div>
   </div>
 </template>

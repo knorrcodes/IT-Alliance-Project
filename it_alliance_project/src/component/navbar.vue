@@ -1,6 +1,6 @@
 <template>
-    <div class="navbar">
-        <b-navbar toggleable="lg" type="dark" variant="info">
+  <div class="navbar px-0 mx-0 justify-content-end">
+    <!--         <b-navbar toggleable="lg" type="dark" variant="info">
             <b-navbar-brand href="#">ITA Portal</b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -11,7 +11,7 @@
                     <b-nav-item href="#" disabled>Disabled</b-nav-item>
                 </b-navbar-nav>
 
-                <!-- Right aligned nav items -->
+               
                 <b-navbar-nav class="ml-auto">
                     <b-nav-form>
                         <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
@@ -26,7 +26,7 @@
                     </b-nav-item-dropdown>
 
                     <b-nav-item-dropdown right>
-                        <!-- Using 'button-content' slot -->
+                       
                         <template v-slot:button-content>
                             <em>User</em>
                         </template>
@@ -36,16 +36,41 @@
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
-    </div>
+    -->
+
+    <nav class="nav">
+      <ul class="nav nav-pills nav-fill">
+        <li class="nav-item">
+          <router-link :to="{ name: 'mainPage' }">
+            <a class="nav-link" href="#">Home</a>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link :to="{ name: 'listPage' }">
+            <a class="nav-link" href="#">List</a>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/login">
+            <a class="nav-link" href="#">Login</a>
+          </router-link>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </template>
 
 <script>
 export default {
-    name: "navbar",
-    props: {
+  name: "navbar",
+  props: {
     fixed: top
   }
-}
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+.navbar {
+  width: 100%;
+}
+</style>
