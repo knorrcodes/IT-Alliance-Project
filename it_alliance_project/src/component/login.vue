@@ -12,7 +12,7 @@
       <input type="password" id="lname" class="mt-1 ml-1" />
       <br />
       <router-link to="/" tag="button" id="home-button">Create Account</router-link>
-      <button v-if="authenticated" v-on:click="logout" id="logout-button">Logout okta</button>
+      <button v-if="authenticated" v-on:click="logout" id="logout-button">Logout</button>
       <button v-else v-on:click="login" id="login-button">Login</button>
     </div>
   </div>
@@ -33,6 +33,7 @@ export default {
     this.isAuthenticated();
   },
   watch: {
+    // Everytime the route changes, check for auth status
     $route: "isAuthenticated"
   },
   methods: {
@@ -40,7 +41,7 @@ export default {
       this.authenticated = await this.$auth.isAuthenticated();
     },
     login() {
-      this.$auth.loginRedirect("/mainPage");
+      this.$auth.loginRedirect("/");
     },
     async logout() {
       await this.$auth.logout();
