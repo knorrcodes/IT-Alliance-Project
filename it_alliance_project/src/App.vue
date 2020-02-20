@@ -9,27 +9,18 @@
     -->
 
     <router-view />
-    <router-link to="/" tag="button" id="home-button">Create Account</router-link>
-    <button v-if="authenticated" v-on:click="logout" id="logout-button">Logout okta</button>
-    <button v-else v-on:click="login" id="login-button">Login</button>
   </div>
 </template>
 
 <script>
-/*import listPage from "@/component/listPage.vue"
-import login from "@/component/login.vue";
-import mainPage from "@/component/mainPage.vue";*/
 import navbar from "@/component/navbar.vue";
 
 export default {
   name: "app",
   components: {
-    /*login,
-    listPage,
-    mainPage,*/
     navbar
-  },
-  data: function() {
+  }
+  /* data: function() {
     return {
       authenticated: false
     };
@@ -53,7 +44,7 @@ export default {
 
       this.$router.push({ path: "/login" });
     }
-  }
+  } */
 };
 </script>
 

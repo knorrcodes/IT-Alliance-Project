@@ -10,28 +10,22 @@ Vue.use(Auth, {
     issuer: 'https://dev-253896.okta.com/oauth2/default',
     clientId: '0oa242wfbnQmekjOF4x6',
     redirectUri: 'http://localhost:8080/mainPage',
-    scopes: ['openid', 'profile', 'email'],
+    scope: 'openid profile email',
     pkce: true
 })
-
-const router = new Router({
-    mode: 'history',
-    routes: [{
-        path: '/implicit/callback',
-        component: Auth.handleCallback()
-    }, ]
-})
-
-
+//router.beforeEach(Vue.prototype.$auth.authRedirectGuard())
 
 Vue.use(Router);
-
-router.beforeEach(Vue.prototype.$auth.authRedirectGuard())
-
-export default new Router({
-    mode: "history",
+/* const router = new Router({
+    mode: 'history',
     base: process.env.BASE_URL,
+    meta: {
+        requiresAuth: true
+    },
     routes: [{
+            path: '/implicit/callback',
+            component: Auth.handleCallback()
+        }, {
             path: '/',
             redirect: {
                 name: 'mainPage'
@@ -41,6 +35,50 @@ export default new Router({
             path: '/listPage',
             name: 'listPage',
             component: listPage
+
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: login
+
+        },
+        {
+            path: '/mainPage',
+            name: 'mainPage',
+            component: mainPage
+        },
+        {
+            path: '/navbar',
+            name: 'navbar',
+            component: navbar
+        }
+    ]
+}) */
+
+
+
+export default new Router({
+    mode: "history",
+    base: process.env.BASE_URL,
+    meta: {
+        requiresAuth: true
+    },
+    routes: [{
+            path: '/',
+            redirect: {
+                name: 'mainPage'
+            }
+        },
+        {
+            path: '/implicit/callback',
+            component: Auth.handleCallback()
+        },
+        {
+            path: '/listPage',
+            name: 'listPage',
+            component: listPage //,
+            //beforeEnter: requireAuth
         },
         {
             path: '/login',
@@ -56,14 +94,20 @@ export default new Router({
             path: '/navbar',
             name: 'navbar',
             component: navbar
-        }
-        /*
-                {
-                    path: '/protected',
-                    component: Protected,
-                    meta: {
-                        requiresAuth: true
-                    }
-                }*/
+        },
+
     ],
 });
+
+/*function requireAuth(to, from, next) {
+    if (!Auth.isAuthenticated()) {
+        next({
+            path: '/login',
+            query: {
+                redirect: to.fullPath
+            }
+        })
+    } else {
+        next()
+    }
+}*/

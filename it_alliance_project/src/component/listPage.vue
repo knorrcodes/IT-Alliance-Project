@@ -23,7 +23,7 @@
 
 export default /*class listPage extends Vue*/ {
   name: "listPage"
-}
+};
 </script>
 
 <style scoped>
