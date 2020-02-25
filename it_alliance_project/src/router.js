@@ -28,7 +28,7 @@ Vue.use(Router);
 router.beforeEach(Vue.prototype.$auth.authRedirectGuard())
 
 
-export default Router({
+export default new Router({
     mode: "history",
     base: process.env.BASE_URL,
     routes: [{
