@@ -1,7 +1,5 @@
 <template>
   <div class="login">
-    <h1>{{ msg }}</h1>
-
     <div class="homeButton">
       <br />
       <br />
@@ -12,26 +10,25 @@
       <input type="password" id="pword" class="mt-1 ml-1" />
       <br />
       <router-link to="/" tag="button" id="home-button">Create Account</router-link>
-      <button v-if="authenticated" v-on:click="logout" id="logout-button">Logout okta</button>
-      <button v-else v-on:click="login" id="login-button">Login</button>
+      <button v-if="authenticated" v-on:click="logout()" id="logout-button">Logout</button>
+      <button v-else v-on:click="login()" id="login-button">Login</button>
     </div>
   </div>
 </template>
 
-<script>
-import auth from "@okta/okta-vue";
-
-var authClient = new auth({
-  url: "https://dev-253896.okta.com/oauth2/default/v1/authorize",
-  clientId: "0oa242wfbnQmekjOF4x6",
-  redirectUri: "http://localhost:8080/mainPage"
-});
-
+<script lang="ts">
+const PATH_TO_PROTECTED_ROUTE = "/private";
 export default {
   name: "login",
-  props: {
+  methods: {
+    login() {
+      this.$auth.loginRedirect(PATH_TO_PROTECTED_ROUTE);
+    }
+  }
+  /*  props: {
     msg: String
   },
+
   data: function() {
     return {
       authenticated: false
@@ -48,22 +45,7 @@ export default {
       this.authenticated = await this.$auth.isAuthenticated();
     },
     login() {
-      /*  authClient.signIn().then(res => {
-        if (res.status === "SUCCESS") {
-          authClient.token.getWithRedirect({
-            sessionToken: res.sessionToken,
-            responseType: "id_token"
-          });
-        }
-      }); */
-
-      var uname = document.getElementById("uname").value;
-      var pword = document.getElementById("pword").value;
-
-      this.authClient.login(uname, pword).then(resp => alert(resp));
-
-      /*       this.$auth.loginRedirect("/mainPage");
-       */
+      this.$router.push({ path: "/mainPage" });
     },
     async logout() {
       await this.$auth.logout();
@@ -71,7 +53,7 @@ export default {
 
       this.$router.push({ path: "/login" });
     }
-  }
+  } */
 };
 </script>
 

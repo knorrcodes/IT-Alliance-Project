@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import { NavbarPlugin } from 'bootstrap-vue'
+import {
+    NavbarPlugin
+} from 'bootstrap-vue'
 
 import {
     BootstrapVue,
@@ -9,6 +11,8 @@ import {
 } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+
 
 
 
@@ -23,6 +27,8 @@ new Vue({
     el: '#app',
     router,
     template: '<App/>',
-    components: { App },
+    components: {
+        App
+    },
     render: h => h(App),
 }).$mount('#app')

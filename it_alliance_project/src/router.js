@@ -6,79 +6,36 @@ import mainPage from '@/component/mainPage'
 import navbar from '@/component/navbar'
 import Auth from '@okta/okta-vue'
 
-Vue.use(Auth, {
-    issuer: 'https://dev-253896.okta.com/oauth2/default',
+
+
+const config = {
     clientId: '0oa242wfbnQmekjOF4x6',
-    redirectUri: 'http://localhost:8080/mainPage',
-    scope: 'openid profile email',
+    issuer: 'https://dev-253896.okta.com/oauth2/default',
+    redirectUri: 'http://localhost:8080/implicit/callback',
+    scopes: ['openid', 'profile', 'email'],
     pkce: true
-})
-//router.beforeEach(Vue.prototype.$auth.authRedirectGuard())
-
-Vue.use(Router);
-/* const router = new Router({
+}
+Vue.use(Auth, config)
+const CALLBACK_PATH = '/implicit/callback';
+const router = new Router({
     mode: 'history',
-    base: process.env.BASE_URL,
-    meta: {
-        requiresAuth: true
-    },
     routes: [{
-            path: '/implicit/callback',
-            component: Auth.handleCallback()
-        }, {
-            path: '/',
-            redirect: {
-                name: 'mainPage'
-            }
-        },
-        {
-            path: '/listPage',
-            name: 'listPage',
-            component: listPage
-
-        },
-        {
-            path: '/login',
-            name: 'login',
-            component: login
-
-        },
-        {
-            path: '/mainPage',
-            name: 'mainPage',
-            component: mainPage
-        },
-        {
-            path: '/navbar',
-            name: 'navbar',
-            component: navbar
-        }
-    ]
-}) */
+        path: CALLBACK_PATH,
+        component: Auth.handleCallback()
+    }, ]
+})
+Vue.use(Router);
+router.beforeEach(Vue.prototype.$auth.authRedirectGuard())
 
 
-
-export default new Router({
+export default Router({
     mode: "history",
     base: process.env.BASE_URL,
-    meta: {
-        requiresAuth: true
-    },
     routes: [{
-            path: '/',
-            redirect: {
-                name: 'mainPage'
-            }
-        },
-        {
-            path: '/implicit/callback',
-            component: Auth.handleCallback()
-        },
-        {
             path: '/listPage',
             name: 'listPage',
-            component: listPage //,
-            //beforeEnter: requireAuth
+            component: listPage,
+
         },
         {
             path: '/login',
@@ -98,16 +55,3 @@ export default new Router({
 
     ],
 });
-
-/*function requireAuth(to, from, next) {
-    if (!Auth.isAuthenticated()) {
-        next({
-            path: '/login',
-            query: {
-                redirect: to.fullPath
-            }
-        })
-    } else {
-        next()
-    }
-}*/

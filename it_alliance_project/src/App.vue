@@ -5,9 +5,6 @@
     </div>
     <div class="row"></div>
     <img alt="Vue logo" src="./assets/ita_logo.png" />
-    <!--     <router-view></router-view>
-    -->
-
     <router-view />
   </div>
 </template>
@@ -19,32 +16,22 @@ export default {
   name: "app",
   components: {
     navbar
-  }
-  /* data: function() {
-    return {
-      authenticated: false
-    };
+  },
+  data: function() {
+    return { authenticated: false };
   },
   created() {
     this.isAuthenticated();
   },
   watch: {
+    // Everytime the route changes, check for auth status
     $route: "isAuthenticated"
   },
   methods: {
     async isAuthenticated() {
       this.authenticated = await this.$auth.isAuthenticated();
-    },
-    login() {
-      this.$auth.loginRedirect("/mainPage");
-    },
-    async logout() {
-      await this.$auth.logout();
-      await this.isAuthenticated();
-
-      this.$router.push({ path: "/login" });
     }
-  } */
+  }
 };
 </script>
 
