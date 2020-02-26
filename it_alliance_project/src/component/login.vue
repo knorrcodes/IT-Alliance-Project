@@ -38,7 +38,8 @@ export default {
       } else {
         this.$auth.loginRedirect(PATH_TO_PROTECTED_ROUTE);
       }
-    }
+    },
+    logout() {}
   }
 };
 </script>
