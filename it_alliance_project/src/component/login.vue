@@ -10,50 +10,36 @@
       <input type="password" id="pword" class="mt-1 ml-1" />
       <br />
       <router-link to="/" tag="button" id="home-button">Create Account</router-link>
-      <button v-if="authenticated" v-on:click="logout()" id="logout-button">Logout</button>
+      <button v-if="this.$parent.authenticated" v-on:click="logout()" id="logout-button">Logout</button>
       <button v-else v-on:click="login()" id="login-button">Login</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-const PATH_TO_PROTECTED_ROUTE = "/private";
+const PATH_TO_PROTECTED_ROUTE = "/listPage";
 export default {
   name: "login",
-  methods: {
-    login() {
-      this.$auth.loginRedirect(PATH_TO_PROTECTED_ROUTE);
-    }
-  }
-  /*  props: {
-    msg: String
-  },
-
   data: function() {
     return {
-      authenticated: false
+      claims: ""
     };
   },
   created() {
-    this.isAuthenticated();
-  },
-  watch: {
-    $route: "isAuthenticated"
+    this.setup();
   },
   methods: {
-    async isAuthenticated() {
-      this.authenticated = await this.$auth.isAuthenticated();
+    async setup() {
+      this.claims = await this.$auth.getUser();
     },
     login() {
-      this.$router.push({ path: "/mainPage" });
-    },
-    async logout() {
-      await this.$auth.logout();
-      await this.isAuthenticated();
-
-      this.$router.push({ path: "/login" });
+      if (this.authenticated == false) {
+        this.$router.push("/mainPage");
+      } else {
+        this.$auth.loginRedirect(PATH_TO_PROTECTED_ROUTE);
+      }
     }
-  } */
+  }
 };
 </script>
 

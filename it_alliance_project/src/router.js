@@ -16,7 +16,9 @@ const config = {
     pkce: true
 }
 Vue.use(Auth, config)
+
 const CALLBACK_PATH = '/implicit/callback';
+
 const router = new Router({
     mode: 'history',
     routes: [{
@@ -35,6 +37,9 @@ export default new Router({
             path: '/listPage',
             name: 'listPage',
             component: listPage,
+            meta: {
+                requiresAuth: true
+            }
 
         },
         {
