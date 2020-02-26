@@ -53,6 +53,11 @@ export default new Router({
             component: mainPage
         },
         {
+            path: '/',
+            name: 'default',
+            component: mainPage
+        },
+        {
             path: '/navbar',
             name: 'navbar',
             component: navbar
