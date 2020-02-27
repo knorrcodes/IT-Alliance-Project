@@ -3,15 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 8081",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@okta/okta-vue": "^1.3.0",
+    "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.4.0",
     "core-js": "^3.4.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^14.6.0",
     "vue": "^2.6.11",
     "vue-property-decorator": "^8.3.0",
     "vue-router": "^3.1.5"
@@ -34,17 +39,17 @@
       "plugin:vue/base",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "no-console": "off"
+    },
     "plugins": [
       "vue"
     ],
-
     "parserOptions": {
       "parser": "babel-eslint",
       "ecmaFeatures": {
         "legacyDecorators": true
       }
-
     }
   },
   "browserslist": [

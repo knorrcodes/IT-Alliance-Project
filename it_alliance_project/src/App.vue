@@ -6,11 +6,18 @@
     <div class="row"></div>
     <img alt="Vue logo" src="./assets/ita_logo.png" />
     <router-view />
+    <div>Data: {{example1}}</div>
+    <button @click="getLanguage">Get lang</button>
   </div>
 </template>
 
 <script>
 import navbar from "@/component/navbar.vue";
+import axios from "axios";
+
+axios.post("http://localhost:3000/graphql", {
+  query: "{ language }"
+});
 
 export default {
   name: "app",
@@ -18,7 +25,7 @@ export default {
     navbar
   },
   data: function() {
-    return { authenticated: false };
+    return { authenticated: false, example1: "" };
   },
   created() {
     this.isAuthenticated();
@@ -30,6 +37,16 @@ export default {
   methods: {
     async isAuthenticated() {
       this.authenticated = await this.$auth.isAuthenticated();
+    },
+    async getLanguage() {
+      try {
+        const res = await axios.post("http://localhost:3000/graphql", {
+          query: "{language}"
+        });
+        this.example1 = res.data.data.language;
+      } catch (e) {
+        console.log("err", e);
+      }
     }
   }
 };
