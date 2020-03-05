@@ -7,3 +7,5 @@ class Champion {
 
 
 module.exports = Champion;
+
+//to run the sever: node server

@@ -6,8 +6,6 @@ import mainPage from '@/component/mainPage'
 import navbar from '@/component/navbar'
 import Auth from '@okta/okta-vue'
 
-
-
 const config = {
     clientId: '0oa242wfbnQmekjOF4x6',
     issuer: 'https://dev-253896.okta.com/oauth2/default',
