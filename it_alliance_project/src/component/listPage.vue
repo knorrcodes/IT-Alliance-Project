@@ -3,8 +3,8 @@
   <div class="listPage">
     <br />
     <h1 class="text-center">##LIST PAGE##</h1>
-
-    <table border='1' width='80%' style='border-collapse: collapse;'>
+    <br />
+    <table border='1' width='100%' style='border-collapse: collapse;'>
       <tr>
         <th>Project Name</th>
         <th>Project Description</th>
