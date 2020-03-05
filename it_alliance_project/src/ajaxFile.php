@@ -1,5 +1,5 @@
 <?php
-include "config.php";
+include "./config.php";
 
 $data = json_decode(file_get_contents("php://input"));
 
@@ -7,7 +7,7 @@ $request = $data->request;
 
 // Fetch All records
 if($request == 1){
-  $userData = mysqli_query($con,"select * from itadatabase order by id desc");
+  $userData = mysqli_query($con,"SELECT * FROM project_table ORDER BY id DESC");
 
   $response = array();
   while($row = mysqli_fetch_assoc($userData)){
@@ -20,14 +20,15 @@ if($request == 1){
 
 // Add record
 if($request == 2){
+  $project_id = $data->project_id;
   $project_name = $data->project_name;
   $project_descrip = $data->project_descrip;
   $client_name = $data->client_name;
   $team_member_names = $data->team_member_names;
 
-  $userData = mysqli_query($con,"SELECT * FROM itadatabase WHERE Name='".$project_name."'");
+  $userData = mysqli_query($con,"SELECT * FROM project_table WHERE id='".$project_id."'");
   if(mysqli_num_rows($userData) == 0){
-    mysqli_query($con,"INSERT INTO itadatabase(name,description,client,team_members) VALUES('".$project_name."','".$project_descrip."','".$client_name."','".$team_member_names."')");
+    mysqli_query($con,"INSERT INTO project_table(name,description,client,team_members) VALUES('".$project_name."','".$project_descrip."','".$client_name."','".$team_member_names."')");
     echo "Insert successfully";
   }else{
     echo "Project already exists.";
@@ -44,7 +45,7 @@ if($request == 3){
   $client_name = $data->client_name;
   $team_member_names = $data->team_member_names;
 
-  mysqli_query($con,"UPDATE itadatabase SET name='".$project_name."',email='".$project_descrip."','".$client_name."','".$team_member_names."' WHERE id=".$id);
+  mysqli_query($con,"UPDATE project_table SET name='".$project_name."',description='".$project_descrip."',client='".$client_name."',team_members='".$team_member_names."' WHERE id=".$id);
  
   echo "Update successfully";
   exit;
@@ -54,7 +55,7 @@ if($request == 3){
 if($request == 4){
   $id = $data->id;
 
-  mysqli_query($con,"DELETE FROM itadatabase WHERE id=".$id);
+  mysqli_query($con,"DELETE FROM project_table WHERE id=".$id);
 
   echo "Delete successfully";
   exit;
