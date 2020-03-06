@@ -7,10 +7,10 @@ $request = $data->request;
 
 // Fetch All records
 if($request == 1){
-  $userData = mysqli_query($con,"SELECT * FROM project_table ORDER BY id DESC");
+  $projectData = mysqli_query($con,"SELECT * FROM project_table ORDER BY id DESC");
 
   $response = array();
-  while($row = mysqli_fetch_assoc($userData)){
+  while($row = mysqli_fetch_assoc($projectData)){
     $response[] = $row;
   }
 
@@ -26,8 +26,8 @@ if($request == 2){
   $client_name = $data->client_name;
   $team_member_names = $data->team_member_names;
 
-  $userData = mysqli_query($con,"SELECT * FROM project_table WHERE id='".$project_id."'");
-  if(mysqli_num_rows($userData) == 0){
+  $projectData = mysqli_query($con,"SELECT * FROM project_table WHERE id='".$project_id."'");
+  if(mysqli_num_rows($projectData) == 0){
     mysqli_query($con,"INSERT INTO project_table(name,description,client,team_members) VALUES('".$project_name."','".$project_descrip."','".$client_name."','".$team_member_names."')");
     echo "Insert successfully";
   }else{

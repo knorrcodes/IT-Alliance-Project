@@ -58,7 +58,7 @@ export default /*class listPage extends Vue*/ {
       })
       .then(function (response) {
         project_table = response.data;
-        console.log(response);
+        //console.log(response);
       })
       .catch(function (error) {
         console.log(error);
