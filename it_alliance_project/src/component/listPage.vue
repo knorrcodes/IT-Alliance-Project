@@ -38,6 +38,21 @@
 <script>
 
 const axios = require('axios').default;
+const qs = require('qs')
+
+const options = {
+  method: 'POST',
+  headers: { 'content-type': 'application/x-www-form-urlencoded' },
+}
+
+axios(options)
+  .then(function(response) {
+    console.log(response.data)
+  })
+  .catch(function(error) {
+    console.log(error)
+  })
+
 
 export default /*class listPage extends Vue*/ {
   name: "listPage",
@@ -53,14 +68,17 @@ export default /*class listPage extends Vue*/ {
   },
   methods: {
     allRecords: function(){
-      axios.post('../ajaxfile.php', {
-        request: 1
-      })
+      console.log("Before post256");
+      axios.post('http://localhost:8080/ajaxFile.php', {
+        request: '1'
+       })
       .then(function (response) {
+        console.log("After post256");
         project_table = response.data;
         //console.log(response);
       })
       .catch(function (error) {
+        console.log("Before Error256");
         console.log(error);
       });
   
@@ -68,7 +86,7 @@ export default /*class listPage extends Vue*/ {
     addRecord: function(){
 
       if(this.project_name != '' && this.project_descrip != '' && this.client_name != '' && this.team_member_names != ''){
-        axios.post('../ajaxfile.php', {
+        axios.post('../ajaxFile.php', {
           request: 2,
           project_name: this.project_name,
           project_descrip: this.project_descrip,
@@ -104,7 +122,7 @@ export default /*class listPage extends Vue*/ {
       var team_member_names = this.project_table[index].team_member_names;
 
       if(project_name !='' && project_descrip !=''){
-        axios.post('../ajaxfile.php', {
+        axios.post('../ajaxFile.php', {
           request: 3,
           id: id,
           project_name: project_name,
@@ -120,7 +138,7 @@ export default /*class listPage extends Vue*/ {
     },
     deleteRecord: function(index,id){
   
-      axios.post('../ajaxfile.php', {
+      axios.post('../ajaxFile.php', {
         request: 4,
         id: id
       })

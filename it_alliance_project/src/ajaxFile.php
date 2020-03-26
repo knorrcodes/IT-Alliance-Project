@@ -1,13 +1,15 @@
 <?php
 include "./config.php";
-
+echo "__3__";
 $data = json_decode(file_get_contents("php://input"));
+echo "__5__";
 
 $request = $data->request;
 
 // Fetch All records
 if($request == 1){
   $projectData = mysqli_query($con,"SELECT * FROM project_table ORDER BY id DESC");
+  echo mysqli_errno($con);
 
   $response = array();
   while($row = mysqli_fetch_assoc($projectData)){
