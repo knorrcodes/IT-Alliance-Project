@@ -1,17 +1,10 @@
 <template>
   <div class="mainPage">
+    <hr />
     <br />
-    <h1 class="text-center">##MAIN PAGE##</h1>
-    <div class="row">
-      <div class="col-6">
-        <button type="submit">Something</button>
-      </div>
-      <div class="col-6">
-        <button type="submit">Projects Page</button>
-      </div>
-    </div>
-    <div class="row mt-5">
-      <h2 class="border mx-auto">SCROLLING FEED OF POPULAR PROJECTS</h2>
+
+    <div class="row align-items-end mt-5">
+      <h2 class="border mx-auto">MOST POPULAR PROJECTS</h2>
     </div>
   </div>
 </template>
@@ -21,11 +14,14 @@
 
 export default /*class mainPage extends Vue*/ {
   name: "mainPage"
-}
+};
 </script>
 
 <style scoped>
 .border {
   border: 5;
+}
+hr {
+  width: 90%;
 }
 </style>

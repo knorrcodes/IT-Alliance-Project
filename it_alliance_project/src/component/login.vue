@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <h1>{{ msg }}</h1>
+    <hr />
 
     <div class="homeButton">
       <br />
@@ -54,6 +54,9 @@ export default {
 
 
 <style scoped>
+hr {
+  width: 90%;
+}
 h3 {
   margin: 40px 0 0;
 }
