@@ -62,3 +62,4 @@ if($request == 4){
   echo "Delete successfully";
   exit;
 }
+?>

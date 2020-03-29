@@ -1,5 +1,7 @@
 <?php
 
+header('Access-Control-Allow-Origin: *'); 
+
 $host = "localhost"; /* Host name */
 $port=3306; /* Port */
 //$socket="";
@@ -60,3 +62,4 @@ $con->close();
 	or die ('Could not connect to the database server' . mysqli_connect_error());
 
 $con->close(); */
+?>

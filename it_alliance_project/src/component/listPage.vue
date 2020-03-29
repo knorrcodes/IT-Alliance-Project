@@ -68,18 +68,41 @@ export default /*class listPage extends Vue*/ {
   },
   methods: {
     allRecords: function(){
+      let table = new FormData();
       console.log("Before post256");
-      axios.post('http://localhost:8080/ajaxFile.php', {
-        request: '1'
+      //axios.get('./ajaxFile.php', {
+      axios.get('/', {      
+        request: '1',
+        project_name: this.project_name,
+        project_descrip: this.project_descrip,
+        client_name: this.client_name,
+        team_member_names: this.team_member_names,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
        })
       .then(function (response) {
         console.log("After post256");
-        project_table = response.data;
+        table = response.data;
         //console.log(response);
       })
       .catch(function (error) {
-        console.log("Before Error256");
-        console.log(error);
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
       });
   
     },
