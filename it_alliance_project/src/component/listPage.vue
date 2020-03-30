@@ -40,10 +40,16 @@
 const axios = require('axios').default;
 const qs = require('qs')
 
+axios.get('https://api.github.com/users/codeheaven-io');
+
 const options = {
   method: 'POST',
-  headers: { 'content-type': 'application/x-www-form-urlencoded' },
+  headers: { 'content-type': 'application/x-www-form-urlencoded' }
 }
+
+var config = {
+  headers: {'X-My-Custom-Header': 'Header-Value'}
+};
 
 axios(options)
   .then(function(response) {
@@ -77,10 +83,11 @@ export default /*class listPage extends Vue*/ {
         project_descrip: this.project_descrip,
         client_name: this.client_name,
         team_member_names: this.team_member_names,
-        headers: {
+        },
+        { headers: {
           'Content-Type': 'multipart/form-data'
-        }
-       })
+          }
+        })
       .then(function (response) {
         console.log("After post256");
         table = response.data;
@@ -109,13 +116,13 @@ export default /*class listPage extends Vue*/ {
     addRecord: function(){
 
       if(this.project_name != '' && this.project_descrip != '' && this.client_name != '' && this.team_member_names != ''){
-        axios.post('../ajaxFile.php', {
+        axios.post('http://localhost:8080/ajaxFile.php', {
           request: 2,
           project_name: this.project_name,
           project_descrip: this.project_descrip,
           client_name: this.client_name,
           team_member_names: this.team_member_names
-        })
+        }, options)
         .then(function (response) {
 
           // Fetch records
@@ -130,8 +137,23 @@ export default /*class listPage extends Vue*/ {
           alert(response.data);
         })
         .catch(function (error) {
-          console.log(error);
-        });
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+      });
       }else{
         alert('Fill all fields.');
       }

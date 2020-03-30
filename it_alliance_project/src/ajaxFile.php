@@ -22,13 +22,13 @@ if($request == 1){
 
 // Add record
 if($request == 2){
-  $project_id = $data->project_id;
+  //$project_id = $data->project_id;
   $project_name = $data->project_name;
   $project_descrip = $data->project_descrip;
   $client_name = $data->client_name;
   $team_member_names = $data->team_member_names;
 
-  $projectData = mysqli_query($con,"SELECT * FROM project_table WHERE id='".$project_id."'");
+  $projectData = mysqli_query($con,"SELECT * FROM project_table WHERE name='".$project_name."'");
   if(mysqli_num_rows($projectData) == 0){
     mysqli_query($con,"INSERT INTO project_table(name,description,client,team_members) VALUES('".$project_name."','".$project_descrip."','".$client_name."','".$team_member_names."')");
     echo "Insert successfully";
