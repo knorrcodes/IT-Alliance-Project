@@ -23,7 +23,7 @@ if (!$con) {
 switch ($method) {
   case 'GET':
     $id = $_GET['id'];
-    $sql = "select * from project_table".($id?" where id=$id":''); 
+    $sql = "select * from itadatabase.project_table"; //.($id?" where id=$id":''); 
     break;
   case 'POST':
     $project_name = $_POST["name"];
@@ -31,7 +31,8 @@ switch ($method) {
     $client_name = $_POST["client"];
     $team_member_names = $_POST["team_members"];
 
-    $sql = "insert into contacts (name, description, client, team_members) values ('$project_name', '$project_descrip', '$client_name', '$team_member_names')"; 
+    $sql = "INSERT INTO itadatabase.project_table (name, description, client, team_members) 
+      VALUES ('$project_name', '$project_descrip', '$client_name', '$team_member_names')"; 
     break;
 }
 
