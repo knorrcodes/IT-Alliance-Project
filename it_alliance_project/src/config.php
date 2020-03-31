@@ -1,5 +1,5 @@
 <?php
-
+echo "__1__";
 header('Access-Control-Allow-Origin: *'); 
 
 $host = "localhost"; /* Host name */
@@ -9,7 +9,7 @@ $user = "dbAdmin"; /* User */
 $password = "Doodle6-Clothing"; /* Password */
 $dbname = "itaDatabase"; /* Database name */
 
-$con = mysqli_connect($host, $user, $password,$dbname);
+$con = mysqli_connect($host, $port, $user, $password, $dbname);
 
 $method = $_SERVER['REQUEST_METHOD'];
 $request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
@@ -23,7 +23,7 @@ if (!$con) {
 switch ($method) {
   case 'GET':
     $id = $_GET['id'];
-    $sql = "select * from itadatabase.project_table"; //.($id?" where id=$id":''); 
+    $sql = "SELECT * FROM itadatabase.project_table LIMIT 0, 1000"; //.($id?" where id=$id":''); 
     break;
   case 'POST':
     $project_name = $_POST["name"];

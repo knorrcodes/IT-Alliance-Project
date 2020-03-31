@@ -8,7 +8,25 @@ $request = $data->request;
 
 // Fetch All records
 if($request == 1){
-  $projectData = mysqli_query($con,"SELECT * FROM project_table ORDER BY id DESC");
+  $condition = "1";
+  if(isset($_GET['projectid'])){
+    $condition = " id=".$_GET['projectid'];
+  }
+
+  $projectData = mysqli_query($con,"SELECT * FROM itadatabase.project_table WHERE ".$condition);
+
+  $response = array();
+  
+  while($row = mysqli_fetch_assoc($projectData)){
+  
+     $response[] = $row;
+  }
+  
+  echo json_encode($response);
+  exit;
+
+
+  /* $projectData = mysqli_query($con,"SELECT * FROM project_table ORDER BY id DESC");
   echo mysqli_errno($con);
 
   $response = array();
@@ -17,7 +35,7 @@ if($request == 1){
   }
 
   echo json_encode($response);
-  exit;
+  exit; */
 }
 
 // Add record
