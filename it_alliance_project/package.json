@@ -16,6 +16,7 @@
     "core-js": "^3.4.4",
     "mysql": "^2.18.1",
     "php": "0.0.1",
+    "serve": "^11.3.0",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
     "vue-property-decorator": "^8.3.0",

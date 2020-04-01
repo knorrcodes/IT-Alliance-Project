@@ -3,11 +3,11 @@ echo "__1__";
 header('Access-Control-Allow-Origin: *'); 
 
 $host = "localhost"; /* Host name */
-$port=3306; /* Port */
+$port=3308; /* Port */
 //$socket="";
 $user = "dbAdmin"; /* User */
 $password = "Doodle6-Clothing"; /* Password */
-$dbname = "itaDatabase"; /* Database name */
+$dbname = "itadb"; /* Database name */
 
 $con = mysqli_connect($host, $port, $user, $password, $dbname);
 

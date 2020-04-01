@@ -26,7 +26,8 @@
             document.getElementById('post').onclick = function() {
                 var data = document.getElementById('data').value;
 
-                axios.post('http://localhost:8080/postServer', JSON.parse(data))
+                //axios.post('http://localhost:8080/postServer', JSON.parse(data))
+                axios.post('http://localhost/ita/postServer', JSON.parse(data))
                     .then(function(res) {
                         output.className = 'container';
                         output.innerHTML = res.data;

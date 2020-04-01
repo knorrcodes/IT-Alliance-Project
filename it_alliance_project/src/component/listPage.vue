@@ -82,14 +82,14 @@ const options = {
 var config = {
   headers: {'X-My-Custom-Header': 'Header-Value'}
 };
-
+/* 
 axios(options)
   .then(function(response) {
     console.log(response.data)
   })
   .catch(function(error) {
     console.log(error)
-  })
+  }) */
 /*
 import Vue from 'vue';
 
@@ -104,9 +104,11 @@ var project_table = new Vue({
 */
 export default /*class listPage extends Vue*/ {
   name: "listPage",
-  data: {
-    project_table: "",
-    projectid: 0
+  data: function() {
+    return {
+      project_table: "",
+      projectid: 0
+    }
   },
   /* data: function() {
     return {
@@ -123,7 +125,7 @@ export default /*class listPage extends Vue*/ {
       //let table = new FormData();
       console.log("Before post256");
       //axios.get('./ajaxFile.php', {
-      axios.get('/', {      
+      axios.get('./ajaxFile.php', {      
         request: '1'
         /* project_name: this.project_name,
         project_descrip: this.project_descrip,
@@ -162,7 +164,7 @@ export default /*class listPage extends Vue*/ {
     addRecord: function(){
 
       if(this.project_name != '' && this.project_descrip != '' && this.client_name != '' && this.team_member_names != ''){
-        axios.post('http://localhost:8080/ajaxFile.php', {
+        axios.post('./ajaxFile.php', {
           request: 2,
           project_name: this.project_name,
           project_descrip: this.project_descrip,
