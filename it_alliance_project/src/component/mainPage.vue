@@ -15,6 +15,7 @@
 export default /*class mainPage extends Vue*/ {
   name: "mainPage"
 };
+export default {};
 </script>
 
 <style scoped>

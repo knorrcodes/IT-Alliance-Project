@@ -31,12 +31,20 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/base",
       "eslint:recommended"
     ],
     "rules": {},
+    "plugins": [
+      "vue"
+    ],
+
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "babel-eslint",
+      "ecmaFeatures": {
+        "legacyDecorators": true
+      }
+
     }
   },
   "browserslist": [

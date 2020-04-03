@@ -10,18 +10,27 @@
 </template>
 
 <script>
-/*import listPage from "@/component/listPage.vue"
-import login from "@/component/login.vue";
-import mainPage from "@/component/mainPage.vue";*/
 import navbar from "@/component/navbar.vue";
 
 export default {
   name: "app",
   components: {
-    /*login,
-    listPage,
-    mainPage,*/
     navbar
+  },
+  data: function() {
+    return { authenticated: false };
+  },
+  created() {
+    this.isAuthenticated();
+  },
+  watch: {
+    // Everytime the route changes, check for auth status
+    $route: "isAuthenticated"
+  },
+  methods: {
+    async isAuthenticated() {
+      this.authenticated = await this.$auth.isAuthenticated();
+    }
   }
 };
 </script>

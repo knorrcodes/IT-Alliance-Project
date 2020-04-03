@@ -5,49 +5,43 @@
     <div class="homeButton">
       <br />
       <br />
-      <label for="fname">Username:</label>
-      <input type="text" id="fname" class="ml-1" />
+      <label for="uname">Username:</label>
+      <input type="text" id="uname" class="ml-1" />
       <br />
-      <label for="lname">Password:</label>
-      <input type="password" id="lname" class="mt-1 ml-1" />
+      <label for="pword">Password:</label>
+      <input type="password" id="pword" class="mt-1 ml-1" />
       <br />
       <router-link to="/" tag="button" id="home-button">Create Account</router-link>
-      <button v-if="authenticated" v-on:click="logout" id="logout-button">Logout okta</button>
-      <button v-else v-on:click="login" id="login-button">Login</button>
+      <button v-if="this.$parent.authenticated" v-on:click="logout()" id="logout-button">Logout</button>
+      <button v-else v-on:click="login()" id="login-button">Login</button>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+const PATH_TO_PROTECTED_ROUTE = "/listPage";
 export default {
   name: "login",
-  props: {
-    msg: String
-  },
   data: function() {
     return {
-      authenticated: false
+      claims: ""
     };
   },
   created() {
-    this.isAuthenticated();
-  },
-  watch: {
-    $route: "isAuthenticated"
+    this.setup();
   },
   methods: {
-    async isAuthenticated() {
-      this.authenticated = await this.$auth.isAuthenticated();
+    async setup() {
+      this.claims = await this.$auth.getUser();
     },
     login() {
-      this.$auth.loginRedirect("/mainPage");
+      if (this.authenticated == false) {
+        this.$router.push("/mainPage");
+      } else {
+        this.$auth.loginRedirect(PATH_TO_PROTECTED_ROUTE);
+      }
     },
-    async logout() {
-      await this.$auth.logout();
-      await this.isAuthenticated();
-
-      this.$router.push({ path: "/login" });
-    }
+    logout() {}
   }
 };
 </script>
