@@ -1,18 +1,24 @@
 <?php
-echo "__1__";
 header('Access-Control-Allow-Origin: *'); 
+//echo "\n__2__\n";
 
-$host = "localhost"; /* Host name */
-$port=3308; /* Port */
+$host = "localhost:3308"; /* Host name */
+//$port=3306; /* Port */
 //$socket="";
 $user = "dbAdmin"; /* User */
 $password = "Doodle6-Clothing"; /* Password */
 $dbname = "itadb"; /* Database name */
 
-$con = mysqli_connect($host, $port, $user, $password, $dbname);
+$con = mysqli_connect($host, $user, $password, $dbname);
+
+/* check connection */
+if (mysqli_connect_errno()) {
+  printf("Connect failed: %s\n", mysqli_connect_error());
+  exit();
+}
 
 $method = $_SERVER['REQUEST_METHOD'];
-$request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
+//$request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
 //$input = json_decode(file_get_contents('php://input'),true);
 
 // Check connection
@@ -20,10 +26,19 @@ if (!$con) {
   die("Connection failed: " . mysqli_connect_error());
 }
 
+mysqli_close($con);
+
+
+
+/*
 switch ($method) {
   case 'GET':
-    $id = $_GET['id'];
-    $sql = "SELECT * FROM itadatabase.project_table LIMIT 0, 1000"; //.($id?" where id=$id":''); 
+    $condition = "1";
+    if(isset($_GET['id'])){
+      $condition = " id=".$_GET['id'];
+    }
+    //$id = .$_GET['id'];
+    $sql = "SELECT * FROM itadb.project_table WHERE ".$condition; 
     break;
   case 'POST':
     $project_name = $_POST["name"];
@@ -31,7 +46,7 @@ switch ($method) {
     $client_name = $_POST["client"];
     $team_member_names = $_POST["team_members"];
 
-    $sql = "INSERT INTO itadatabase.project_table (name, description, client, team_members) 
+    $sql = "INSERT INTO itadb.project_table (name, description, client, team_members) 
       VALUES ('$project_name', '$project_descrip', '$client_name', '$team_member_names')"; 
     break;
 }
@@ -56,8 +71,9 @@ if ($method == 'GET') {
   } else {
     echo mysqli_affected_rows($con);
   }
+*/
 
-$con->close();
+//$con->close();
 
 /* $con = new mysqli($host, $user, $password, $dbname, $port, $socket)
 	or die ('Could not connect to the database server' . mysqli_connect_error());

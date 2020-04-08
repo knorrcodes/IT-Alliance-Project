@@ -1,20 +1,51 @@
 <?php
-include "./config.php";
-echo "__3__";
-$data = json_decode(file_get_contents("php://input"));
-echo "__5__";
+header("Access-Control-Allow-Origin: *");
+//echo "\n__1__\n"
+//include ($_SERVER['DOCUMENT_ROOT']."/config.php");
 
-$request = $data->request;
+$mysqli = new mysqli("localhost:3308", "dbAdmin", "Doodle6-Clothing", "itadb");
+/* check connection */
+if ($mysqli->connect_errno) {
+  printf("Connect failed: %s\n", $mysqli->connect_error);
+  exit();
+}
 
-// Fetch All records
-if($request == 1){
-  $condition = "1";
-  if(isset($_GET['projectid'])){
-    $condition = " id=".$_GET['projectid'];
+//echo "\n__1__\n";
+
+if ($projectData = $mysqli->query("SELECT * FROM project_table")) {
+  //printf("Select returned %d rows.\n", $result->num_rows);
+  $response = array();
+  
+  while($row = mysqli_fetch_assoc($projectData)){
+  
+     $response[] = $row;
   }
+  
+  echo json_encode($response);
 
-  $projectData = mysqli_query($con,"SELECT * FROM itadatabase.project_table WHERE ".$condition);
+  /* free result set */
+  $projectData->close();
+}
 
+$mysqli->close();
+
+//$data = json_decode(file_get_contents("php://input"));
+//echo "__5__\n";
+//echo "\n_@_", $_GET , "_@_\n";
+
+//$request = $data->request;
+/*
+// Fetch All records
+//if($request == 1){
+//  $condition = "1";
+//  if(isset($_GET['id'])){
+//    $condition = "id=".$_GET['id'];
+//  }
+*/
+  //$projectData = mysqli_query($con,"SELECT * FROM itadb.project_table WHERE ".$condition);
+
+  //$projectData = mysqli_query($con,"SELECT * FROM project_table");
+/*
   $response = array();
   
   while($row = mysqli_fetch_assoc($projectData)){
@@ -25,7 +56,7 @@ if($request == 1){
   echo json_encode($response);
   exit;
 
-
+*/
   /* $projectData = mysqli_query($con,"SELECT * FROM project_table ORDER BY id DESC");
   echo mysqli_errno($con);
 
@@ -36,8 +67,8 @@ if($request == 1){
 
   echo json_encode($response);
   exit; */
-}
-
+//}
+/*
 // Add record
 if($request == 2){
   //$project_id = $data->project_id;
@@ -79,5 +110,5 @@ if($request == 4){
 
   echo "Delete successfully";
   exit;
-}
+}*/
 ?>

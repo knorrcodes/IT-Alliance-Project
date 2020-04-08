@@ -9,12 +9,12 @@
     <br><br>
 
     <!-- Select record by ID -->
-    <input type='text' v-model='userid' placeholder="Enter Project ID">
+    <input type='text' v-model='project_id' placeholder="Enter Project ID">
     <input type='button' @click='recordByID()' value='Select Project by ID'>
     <br><br>
 
     <!-- List records -->
-    <table border='1' width='80%' style='border-collapse: collapse;'>
+    <table id="project_table" border='1' width='100%' style='border-collapse: collapse;'>
       <tr>
         <th>Project Name</th>
         <th>Project Description</th>
@@ -23,9 +23,9 @@
       </tr>
 
       <tr v-for='project in project_table'>
-        <td>{{ project.project_name }}</td>
-        <td>{{ project.project_descrip }}</td>
-        <td>{{ project.client_name }}</td>
+        <td>{{ project.name }}</td>
+        <td>{{ project.description }}</td>
+        <td>{{ project.client }}</td>
         <td>{{ project.team_member_names }}</td>
       </tr>
     </table>
@@ -35,7 +35,7 @@
     
     
     
-    
+    <!-- 
     <table id="project_table" border='1' width='100%' style='border-collapse: collapse;'>
       <tr>
         <th>Project Name</th>
@@ -43,19 +43,19 @@
         <th>Client</th>
         <th>Team Members</th>
         <th></th>
-      </tr>
+      </tr> -->
 
       <!-- Add -->
-      <tr>
+      <!-- <tr>
         <td><input type='text' v-model='project_name'></td>
         <td><input type='text' v-model='project_descrip'></td>
         <td><input type='text' v-model='client_name'></td>
         <td><input type='text' v-model='team_member_names'></td>
         <td><input type='button' value='Add' @click='addRecord();'></td>
-      </tr>
+      </tr> -->
 
       <!-- Update/Delete -->
-      <tr v-for='(id) in project_table'>
+      <!-- <tr v-for='(id) in project_table'>
         <td><input type='text' v-model='project_table.project_name' ></td>
         <td><input type='text' v-model='project_table.project_descrip' ></td>
         <td><input type='text' v-model='project_table.client_name' ></td>
@@ -63,7 +63,7 @@
         <td><input type='button' value='Update' @click='updateRecord(project_table.id);'>&nbsp;
         <input type='button' value='Delete' @click='deleteRecord(project_table.id)'></td>
       </tr>
-    </table>
+    </table> -->
   </div>
 </template>
 
@@ -82,6 +82,7 @@ const options = {
 var config = {
   headers: {'X-My-Custom-Header': 'Header-Value'}
 };
+
 /* 
 axios(options)
   .then(function(response) {
@@ -104,44 +105,25 @@ var project_table = new Vue({
 */
 export default /*class listPage extends Vue*/ {
   name: "listPage",
-  data: function() {
+  data() {
     return {
-      project_table: "",
-      projectid: 0
-    }
+      project_table: undefined,
+      project_id: 0
+    };
   },
-  /* data: function() {
-    return {
-      //project_table: "",
-      /* id: "",
-      project_name: "",
-      project_descrip: "",
-      client_name: "",
-      team_member_names: "" */
-    //}
-  //}, 
   methods: {
-    allRecords: function(){
-      //let table = new FormData();
-      console.log("Before post256");
-      //axios.get('./ajaxFile.php', {
-      axios.get('./ajaxFile.php', {      
+    allRecords() {
+      axios.get('http://localhost/ajaxFile.php', {      
         request: '1'
-        /* project_name: this.project_name,
-        project_descrip: this.project_descrip,
-        client_name: this.client_name,
-        team_member_names: this.team_member_names, */
-        }/*,
-        { headers: {
-          'Content-Type': 'multipart/form-data'
-          }
-        }*/)
-      .then(function (response) {
-        console.log("After post256");
-        listPage.project_table = response.data;
-        //console.log(response);
+        }
+      )
+      .then(response => {
+        console.log(response.data);
+        console.log(this.project_table)
+        this.project_table = response.data;
+        console.log(this.project_table);
       })
-      .catch(function (error) {
+      .catch(error => {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
@@ -160,7 +142,7 @@ export default /*class listPage extends Vue*/ {
         console.log(error.config);
       });
   
-    },
+    }/*,
     addRecord: function(){
 
       if(this.project_name != '' && this.project_descrip != '' && this.client_name != '' && this.team_member_names != ''){
@@ -209,15 +191,15 @@ export default /*class listPage extends Vue*/ {
     updateRecord: function(id){
 
       // Read value from Textbox
-      var project_name = this.project_table[id].project_name;
-      var project_descrip = this.users[id].project_descrip;
-      var client_name = this.project_table[id].client_name;
-      var team_member_names = this.project_table[id].team_member_names;
+      var project_name = this.project_table[project_id].project_name;
+      var project_descrip = this.users[project_id].project_descrip;
+      var client_name = this.project_table[project_id].client_name;
+      var team_member_names = this.project_table[project_id].team_member_names;
 
       if(project_name !='' && project_descrip !=''){
         axios.post('../ajaxFile.php', {
           request: 3,
-          id: id,
+          project_id: project_id,
           project_name: project_name,
           project_descrip: project_descrip
         })
@@ -233,23 +215,23 @@ export default /*class listPage extends Vue*/ {
   
       axios.post('../ajaxFile.php', {
         request: 4,
-        id: id
+        project_id: project_id
       })
       .then(function (response) {
 
         // Remove index from users
         /* project_table.splice(index, 1);
         alert(response.data); */
-      })
+ /*     })
       .catch(function (error) {
         console.log(error);
       });
     }
-  }, 
+  },
   created: function(){
     this.allRecords();
-  }
-}
+  }*/
+}}
 </script>
 
 <style scoped>
