@@ -2,13 +2,20 @@
 <template>
   <div class="listPage">
     <br />
-    <h1 class="text-center">##LIST PAGE##</h1>
-    <br />
-    <!-- Select All records -->
-    <input type='button' @click='allRecords()' value='Retrieve All Projects'>
+    <h1 class="text-center">Projects by Semester</h1>
+    
+    <!-- Select Semester -->
+    <b-dropdown id="semesterSelect" variant="primary" :text="dropdownText" class="m-md-2">
+      <b-dropdown-item @click='spring20()'>Spring 2020</b-dropdown-item>
+      <b-dropdown-item @click='fall20()'>Fall 2020</b-dropdown-item>
+    </b-dropdown>
+
+    <!-- <input type='button' @click='allRecords()' value='Retrieve All Projects'> -->
     <br><br>
 
     <!-- List records -->
+<!--     <b-table :fields="fields" :items="items"></b-table>
+ -->
     <table id="project_table" border='1' width='100%' style='border-collapse: collapse;'>
       <tr>
         <th style="display:none;">ID</th>
@@ -16,7 +23,7 @@
         <th>Project Description</th>
         <th>Client</th>
         <th>Team Members</th>
-        <th></th>
+        <th :style="adminButtons"></th>
       </tr>
 
       <tr v-for='project in project_table'>
@@ -25,20 +32,52 @@
         <td>{{ project.description }}</td>
         <td>{{ project.client }}</td>
         <td>{{ project.team_member_names }}</td>
-        <td><input type='button' value='Update' @click='updateRecord(project.id);'>&nbsp;
+        <td :style="adminButtons"><input type='button' value='Update' @click='updateRecord(project.id)'>&nbsp;
         <input type='button' value='Delete' @click='deleteRecord(project.id)'></td>
       </tr>
 
       <!-- Add -->
-      <tr>
+      <tr :style="adminButtons">
         <td><input type='text' v-model='name'></td>
         <td><input type='text' v-model='description'></td>
         <td><input type='text' v-model='client'></td>
         <td><input type='text' v-model='team_member_names'></td>
-        <td><input type='button' value='Add' @click='addRecord();'></td>
+        <td><input type='button' value='Add' @click='addRecord()'></td>
       </tr>
     </table>
     
+    <br><br>
+
+    <b-alert variant="success" show v-if="loggedIn">Logged in as {{this.username}}</b-alert>
+
+    <b-alert variant="danger" dismissible @dismissed="auth=true" show v-if="!auth">Username or Password Incorrect. Try Again.</b-alert>
+
+    <b-button @click='logout()' variant="primary" v-if="loggedIn">Log Out</b-button>
+
+    <b-button @click='login()' variant="primary" v-if="!show">Log In to Make Changes</b-button>
+
+    <b-form inline class="justify-content-center" @submit="onSubmit" v-if="show && !loggedIn">
+      <b-form-input
+          class="mb-2 mr-sm-2 mb-sm-0"
+          v-model="form.user"
+          required
+          type="text"
+          placeholder="Username"
+      ></b-form-input>
+      <b-form-input
+          class="mb-2 mr-sm-2 mb-sm-0"
+          v-model="form.pass"
+          required
+          :type="passwordType"
+          placeholder="Password"
+      ></b-form-input>
+
+      <b-form-checkbox v-model="passwordType" value="text" unchecked-value="password" class="mb-2 mr-sm-2 mb-sm-0">Show Password</b-form-checkbox>  
+      <b-button type="submit" class="mb-2 mr-sm-2 mb-sm-0" variant="primary">Submit</b-button>
+      <b-button @click="onClear()" class="mb-2 mr-sm-2 mb-sm-0" variant="outline-primary">Clear</b-button>
+      <b-button @click='onCancel()' class="mb-2 mr-sm-2 mb-sm-0" variant="outline-dark">Cancel</b-button>
+    </b-form>
+
     <br><br>
   
   </div>
@@ -53,47 +92,102 @@ export default /*class listPage extends Vue*/ {
   data() {
     return {
       project_table: undefined,
+      table_name: undefined,
+      username: 'basic',
+      password: '5dSbxzQ9n0SLiVWG',
+      adminUser: 'dbAdmin',
+      adminPass: 'Doodle6-Clothing',
       id: 0,
       name: '',
       description: '',
       client: '',
-      team_member_names: ''
-    };
+      team_member_names: '',
+      form: {
+        user: '',
+        pass: ''
+      },
+      show: false,
+      loggedIn: false,
+      auth: true,
+      adminButtons: "display:none;",
+      dropdownText: "Select Semester",
+      passwordType: "password" /*,
+      fields: [
+        {
+          key: id1,
+          label: 'ID',
+          sortable: true
+        },
+        {
+          key: name1,
+          label: 'Project Name',
+          sortable: true
+        },
+        {
+          key: description1,
+          label: 'Project Description',
+          sortable: false
+        },
+        {
+          key: client1,
+          label: 'Client',
+          sortable: true
+        },
+        {
+          key: team_member_names1,
+          label: 'Team Members',
+          sortable: true
+        }
+      ],
+      items: [
+        { isActive: true, id1: 0, name1: 'None', description1: 'None', client1: 'None', team_member_names1: 'None' }
+      ]*/
+    }
   },
   methods: {
     allRecords() {
-      axios.get('http://localhost/ajaxFile.php', {   
-        params: {
-          request: '1'
-        }   
-      })
-      .then(response => {
-        this.project_table = response.data;
-      })
-      .catch(error => {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+      if (this.table_name != undefined) {
+        axios.get('http://localhost/ajaxFile.php', {   
+          params: {
+            request: '1',
+            table_name: this.table_name,
+            username: this.username,
+            password: this.password
+          }   
+        })
+        .then(response => {
+          this.project_table = response.data;
+          //formatTable();
+        })
+        .catch(error => {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+        });
+      }
+      
     },
     addRecord() {
       if(this.name != '' && this.description != '' && this.client != '' && this.team_member_names != ''){
         axios.get('http://localhost/ajaxFile.php', {
           params: {
             request: 2,
+            table_name: this.table_name,
+            username: this.username,
+            password: this.password,
             name: this.name,
             description: this.description,
             client: this.client,
@@ -147,6 +241,9 @@ export default /*class listPage extends Vue*/ {
         axios.get('http://localhost/ajaxFile.php', {
           params: {
             request: 3,
+            table_name: this.table_name,
+            username: this.username,
+            password: this.password,
             id: id,
             name: project_name,
             description: project_description,
@@ -193,10 +290,12 @@ export default /*class listPage extends Vue*/ {
         axios.get('http://localhost/ajaxFile.php', {
           params: {
             request: 4,
+            table_name: this.table_name,
+            username: this.username,
+            password: this.password,
             id: id,
           }
         })
-        
         .then(response => {
           this.allRecords();
           
@@ -227,11 +326,79 @@ export default /*class listPage extends Vue*/ {
             console.log(error.config);
         });
       }
+    },
+    spring20() {
+      this.table_name = 'spring20';
+      this.dropdownText = 'Spring 2020';
+      this.allRecords();
+    },
+    fall20() {
+      this.table_name = 'fall20';
+      this.dropdownText = 'Fall 2020';
+      this.allRecords();
+    },
+    onSubmit(evt) {
+      evt.preventDefault();
+      this.username = this.form.user;
+      this.password = this.form.pass;
+      if (this.username == this.adminUser && this.password == this.adminPass) {
+        this.auth = true;
+        this.form.user = '';
+        this.form.pass = '';
+        this.allRecords();
+        this.loggedIn = true;
+        this.adminButtons = "";
+      }
+      else {
+        this.auth = false;
+        this.show = false;
+        this.form.user = '';
+        this.form.pass = '';
+        this.show = true;
+      }
+      
+    },
+    onClear() {
+      this.show = false;
+      this.form.user = '';
+      this.form.pass = '';
+      this.show = true;
+    },
+    login() {
+      this.show = true;
+    },
+    logout() {
+      this.show = false;
+      this.loggedIn = false;
+      this.adminButtons = "display:none;";
+      this.username = 'basic';
+      this.password = '5dSbxzQ9n0SLiVWG';
+    },
+    onCancel() {
+      this.show = false;
+      this.form.user = '';
+      this.form.pass = '';
+    },
+    formatTable() {
+      /*this.project_table.forEach(element => {
+        this.items += { isActive: true, id1: 1, name1: 'None', description1: 'None', client1: 'None', team_member_names1: 'None' };
+      });*/
+      /*
+      <tr v-for='project in project_table'>
+        <td style="display:none;">{{ project.id }}</td>
+        <td>{{ project.name }}</td>
+        <td>{{ project.description }}</td>
+        <td>{{ project.client }}</td>
+        <td>{{ project.team_member_names }}</td>
+        <td><input type='button' value='Update' @click='updateRecord(project.id)'>&nbsp;
+        <input type='button' value='Delete' @click='deleteRecord(project.id)'></td>
+      </tr>
+      */
     }
-  },
+  }/*,
   created() {
     this.allRecords();
-  }
+  }*/
 }
 </script>
 
