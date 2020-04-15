@@ -18,22 +18,103 @@
 
     <b-card no-body v-for='project in project_table'>
       <b-row no-gutters>
-        <b-col md="6">
+        <b-col md="5">
           <b-row no-gutters>
-            <b-button class="m-2" id="nameTool" size="lg" variant="outline-dark">{{ project.name }}</b-button>
-            <b-tooltip target="nameTool" triggers="hover" placement="right" noninteractive>Project Name</b-tooltip>
+            <b-col md="4">
+              <b-row no-gutters>
+                <h5 class="ml-auto m-2 mt-3">Project Name: </h5>
+              </b-row>
+            </b-col>
+
+            <b-col md="8">
+              <b-row no-gutters>
+                <h1 class="m-1">{{ project.name }}</h1>
+              </b-row>
+            </b-col>
           </b-row>
-          <b-row no-gutters>
-            <b-button class="m-2" id="clientTool" variant="outline-dark">{{ project.client }}</b-button>
-            <b-tooltip target="clientTool" triggers="hover" placement="right" noninteractive>Project Client</b-tooltip>
-          </b-row>
-          <b-row class="m-2">{{ project.description }}</b-row>
           
+          <b-row no-gutters>
+            <b-col md="4"> 
+              <b-row no-gutters>
+                <h5 class="ml-auto m-2">Client: </h5>
+              </b-row>
+            </b-col>
+
+            <b-col md="8"> 
+              <b-row no-gutters> 
+                <b-button class="m-1" id="clientTool" v-b-hover="getEmail(project.client_email)" variant="outline-dark">{{ project.client }}</b-button>
+                <b-tooltip target="clientTool" triggers="hover" placement="right">
+                  <a :href="emailLink">{{ project.client_email }}</a>
+                </b-tooltip>
+              </b-row>
+            </b-col>
+          </b-row>
+
+          <b-row no-gutters>
+            <b-col md="4">
+              <b-row no-gutters>
+                <h5 class="ml-auto m-2">Team Members: </h5>
+              </b-row>
+            </b-col>
+
+            <b-col md="8">
+              <b-row no-gutters>
+                <h3 align="left" class="m-1">{{ project.team_member_names }}</h3>
+              </b-row>
+            </b-col>
+          </b-row>
+
+          <b-row no-gutters>
+            <b-col md="4">
+              <b-row no-gutters>
+                <h5 class="ml-auto m-2">T-Shirt Sizes: </h5>
+              </b-row>
+            </b-col>
+
+            <b-col md="8">
+              <b-row no-gutters style="border: 2px solid blue; border-collapse: collapse; border-radius: 10px;">
+                
+                <b-col align="right" md="4">
+                  <b-row align="right" no-gutters>
+                    <h5 style="align: right;">Small: </h5>
+                  </b-row>
+                  <b-row no-gutters>
+                    <h5 align="right">Large: </h5>
+                  </b-row>
+                </b-col>
+
+                <b-col md="2">
+                  <b-row no-gutters>
+                    <h5 align="left">{{project.tshirt_s}}</h5>
+                  </b-row>
+                  <b-row no-gutters>
+                    <h5 align="left">{{project.tshirt_l}}</h5>
+                  </b-row>
+                </b-col>
+
+                <b-col md="4">
+                  <b-row no-gutters>
+                    <h5 align="right">Medium: </h5>
+                  </b-row>
+                  <b-row no-gutters>
+                    <h5 align="right">X-Large: </h5>
+                  </b-row>
+                </b-col>
+
+                <b-col md="2">
+                  <b-row no-gutters>
+                    <h5 align="left">{{project.tshirt_m}}</h5>
+                  </b-row>
+                  <b-row no-gutters>
+                    <h5 align="left">{{project.tshirt_xl}}</h5>
+                  </b-row>
+                </b-col>
+                
+              </b-row>
+            </b-col>
+          </b-row>
         </b-col>
       </b-row>
-      
-      
-      
     </b-card>
 
     <table id="project_table" border='1' width='100%' style='border-collapse: collapse;'>
@@ -162,7 +243,8 @@ export default /*class listPage extends Vue*/ {
       items: [
         { isActive: false, id1: 0, name1: 'None', description1: 'None', client1: 'None', team_member_names1: 'None' },
         { isActive: true, id1: 1, name1: 'None', description1: 'None', client1: 'None', team_member_names1: 'None' }
-      ]
+      ],
+      emailLink: ""
     }
   },
   methods: {
@@ -399,6 +481,9 @@ export default /*class listPage extends Vue*/ {
       this.show = false;
       this.form.user = '';
       this.form.pass = '';
+    },
+    getEmail(email) {
+      this.emailLink = "mailto:" + email;
     },
     formatTable() {
       /*this.project_table.forEach(element => {
