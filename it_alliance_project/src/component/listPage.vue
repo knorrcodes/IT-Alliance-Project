@@ -14,8 +14,28 @@
     <br><br>
 
     <!-- List records -->
-<!--     <b-table :fields="fields" :items="items"></b-table>
- -->
+    <b-table v-if="false" striped hover :fields="fields" :items="items"></b-table>
+
+    <b-card no-body v-for='project in project_table'>
+      <b-row no-gutters>
+        <b-col md="6">
+          <b-row no-gutters>
+            <b-button class="m-2" id="nameTool" size="lg" variant="outline-dark">{{ project.name }}</b-button>
+            <b-tooltip target="nameTool" triggers="hover" placement="right" noninteractive>Project Name</b-tooltip>
+          </b-row>
+          <b-row no-gutters>
+            <b-button class="m-2" id="clientTool" variant="outline-dark">{{ project.client }}</b-button>
+            <b-tooltip target="clientTool" triggers="hover" placement="right" noninteractive>Project Client</b-tooltip>
+          </b-row>
+          <b-row class="m-2">{{ project.description }}</b-row>
+          
+        </b-col>
+      </b-row>
+      
+      
+      
+    </b-card>
+
     <table id="project_table" border='1' width='100%' style='border-collapse: collapse;'>
       <tr>
         <th style="display:none;">ID</th>
@@ -111,37 +131,38 @@ export default /*class listPage extends Vue*/ {
       auth: true,
       adminButtons: "display:none;",
       dropdownText: "Select Semester",
-      passwordType: "password" /*,
+      passwordType: "password",
       fields: [
         {
-          key: id1,
+          key: 'id1',
           label: 'ID',
           sortable: true
         },
         {
-          key: name1,
+          key: 'name1',
           label: 'Project Name',
           sortable: true
         },
         {
-          key: description1,
+          key: 'description1',
           label: 'Project Description',
           sortable: false
         },
         {
-          key: client1,
+          key: 'client1',
           label: 'Client',
           sortable: true
         },
         {
-          key: team_member_names1,
+          key: 'team_member_names1',
           label: 'Team Members',
           sortable: true
         }
       ],
       items: [
-        { isActive: true, id1: 0, name1: 'None', description1: 'None', client1: 'None', team_member_names1: 'None' }
-      ]*/
+        { isActive: false, id1: 0, name1: 'None', description1: 'None', client1: 'None', team_member_names1: 'None' },
+        { isActive: true, id1: 1, name1: 'None', description1: 'None', client1: 'None', team_member_names1: 'None' }
+      ]
     }
   },
   methods: {
