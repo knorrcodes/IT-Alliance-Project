@@ -14,11 +14,11 @@
     <br><br>
 
     <!-- List records -->
-    <b-table v-if="false" striped hover :fields="fields" :items="items"></b-table>
+    <!-- <b-table v-if="false" striped hover :fields="fields" :items="items"></b-table> -->
 
     <b-card no-body v-for='project in project_table'>
       <b-row no-gutters>
-        <b-col md="5">
+        <b-col md="6">
           <b-row no-gutters>
             <b-col md="4">
               <b-row no-gutters>
@@ -42,8 +42,9 @@
 
             <b-col md="8"> 
               <b-row no-gutters> 
-                <b-button class="m-1" id="clientTool" v-b-hover="getEmail(project.client_email)" variant="outline-dark">{{ project.client }}</b-button>
-                <b-tooltip target="clientTool" triggers="hover" placement="right">
+                <b-button class="m-1" id="clientTool" variant="outline-dark">{{ project.client }}</b-button>
+                <b-tooltip target="clientTool" triggers="hover" placement="right" variant="light">
+                  {{ getEmail(project.client_email) }}
                   <a :href="emailLink">{{ project.client_email }}</a>
                 </b-tooltip>
               </b-row>
@@ -57,7 +58,7 @@
               </b-row>
             </b-col>
 
-            <b-col md="8">
+            <b-col md="6">
               <b-row no-gutters>
                 <h3 align="left" class="m-1">{{ project.team_member_names }}</h3>
               </b-row>
@@ -65,57 +66,90 @@
           </b-row>
 
           <b-row no-gutters>
-            <b-col md="4">
+            <b-col cols="4">
               <b-row no-gutters>
                 <h5 class="ml-auto m-2">T-Shirt Sizes: </h5>
               </b-row>
             </b-col>
 
-            <b-col md="8">
-              <b-row no-gutters style="border: 2px solid blue; border-collapse: collapse; border-radius: 10px;">
-                
-                <b-col align="right" md="4">
-                  <b-row align="right" no-gutters>
-                    <h5 style="align: right;">Small: </h5>
-                  </b-row>
-                  <b-row no-gutters>
-                    <h5 align="right">Large: </h5>
-                  </b-row>
-                </b-col>
-
-                <b-col md="2">
-                  <b-row no-gutters>
-                    <h5 align="left">{{project.tshirt_s}}</h5>
-                  </b-row>
-                  <b-row no-gutters>
-                    <h5 align="left">{{project.tshirt_l}}</h5>
-                  </b-row>
-                </b-col>
-
-                <b-col md="4">
-                  <b-row no-gutters>
-                    <h5 align="right">Medium: </h5>
-                  </b-row>
-                  <b-row no-gutters>
-                    <h5 align="right">X-Large: </h5>
-                  </b-row>
-                </b-col>
-
-                <b-col md="2">
-                  <b-row no-gutters>
-                    <h5 align="left">{{project.tshirt_m}}</h5>
-                  </b-row>
-                  <b-row no-gutters>
-                    <h5 align="left">{{project.tshirt_xl}}</h5>
-                  </b-row>
-                </b-col>
-                
+            <b-col cols="8">
+              <b-row class="m-2" no-gutters>
+                <h5>S : </h5>
+                <h5 class="ml-1">{{project.tshirt_s}}</h5>
+                <h5 class="ml-3">M : </h5>
+                <h5 class="ml-1">{{project.tshirt_m}}</h5>
+                <h5 class="ml-3">L : </h5>
+                <h5 class="ml-1">{{project.tshirt_l}}</h5>
+                <h5 class="ml-3">XL : </h5>
+                <h5 class="ml-1">{{project.tshirt_xl}}</h5>
               </b-row>
             </b-col>
           </b-row>
+
+          <b-row no-gutters>
+            <b-col md="4">
+              <b-row no-gutters>
+                <h5 class="ml-auto m-2">Start Date:</h5>
+              </b-row>
+            </b-col>
+
+            <b-col md="8">
+              <b-row no-gutters>
+                <h5 class="m-1">{{ formatDate(project.start_date) }}</h5>
+              </b-row>
+            </b-col>
+          </b-row>
+
+          <b-row no-gutters>
+            <b-col md="4">
+              <b-row no-gutters>
+                <h5 class="ml-auto m-2">Projected Completion:</h5>
+              </b-row>
+            </b-col>
+
+            <b-col md="8">
+              <b-row no-gutters>
+                <h5 class="m-1">{{ formatDate(project.projected_date) }}</h5>
+              </b-row>
+            </b-col>
+          </b-row>
+
+          <b-row no-gutters>
+            <b-col md="4">
+              <b-row no-gutters>
+                <h5 class="ml-auto m-2">Completed Date:</h5>
+              </b-row>
+            </b-col>
+
+            <b-col md="8">
+              <b-row no-gutters>
+                <h5 class="m-1">{{ formatDate(project.completed_date) }}</h5>
+              </b-row>
+            </b-col>
+          </b-row>
+
+          <b-row no-gutters>
+            <b-col md="4">
+              <b-row no-gutters>
+                <h5 class="ml-auto m-2">Description:</h5>
+              </b-row>
+            </b-col>
+
+            <b-col md="8">
+              <b-row no-gutters>
+                <h5 align="left" class="m-1">{{ project.description }}</h5>
+              </b-row>
+            </b-col>
+          </b-row>
+
+          
+
         </b-col>
       </b-row>
+      
     </b-card>
+
+    <br><br>
 
     <table id="project_table" border='1' width='100%' style='border-collapse: collapse;'>
       <tr>
@@ -157,6 +191,7 @@
 
     <b-button @click='login()' variant="primary" v-if="!show">Log In to Make Changes</b-button>
 
+    <!-- Login Bar -->
     <b-form inline class="justify-content-center" @submit="onSubmit" v-if="show && !loggedIn">
       <b-form-input
           class="mb-2 mr-sm-2 mb-sm-0"
@@ -244,7 +279,7 @@ export default /*class listPage extends Vue*/ {
         { isActive: false, id1: 0, name1: 'None', description1: 'None', client1: 'None', team_member_names1: 'None' },
         { isActive: true, id1: 1, name1: 'None', description1: 'None', client1: 'None', team_member_names1: 'None' }
       ],
-      emailLink: ""
+      emailLink: "",
     }
   },
   methods: {
@@ -485,21 +520,57 @@ export default /*class listPage extends Vue*/ {
     getEmail(email) {
       this.emailLink = "mailto:" + email;
     },
-    formatTable() {
-      /*this.project_table.forEach(element => {
-        this.items += { isActive: true, id1: 1, name1: 'None', description1: 'None', client1: 'None', team_member_names1: 'None' };
-      });*/
-      /*
-      <tr v-for='project in project_table'>
-        <td style="display:none;">{{ project.id }}</td>
-        <td>{{ project.name }}</td>
-        <td>{{ project.description }}</td>
-        <td>{{ project.client }}</td>
-        <td>{{ project.team_member_names }}</td>
-        <td><input type='button' value='Update' @click='updateRecord(project.id)'>&nbsp;
-        <input type='button' value='Delete' @click='deleteRecord(project.id)'></td>
-      </tr>
-      */
+    formatDate(inDate) {
+      var dateText = "";
+      if (inDate == null)
+        return dateText;
+      var nums = inDate.split("-");
+      var month = "";
+      var day = nums[2];
+      var year = nums[0];
+      switch(parseInt(nums[1])) {
+        case 1:
+          month = "January";
+          break;
+        case 2:
+          month = "February";
+          break;
+        case 3:
+          month = "March";
+          break;
+        case 4:
+          month = "April";
+          break;
+        case 5:
+          month = "May";
+          break;
+        case 6:
+          month = "June";
+          break;
+        case 7:
+          month = "July";
+          break;
+        case 8:
+          month = "August";
+          break;
+        case 9:
+          month = "September";
+          break;
+        case 10:
+          month = "October";
+          break;
+        case 11:
+          month = "November";
+          break;
+        case 12:
+          month = "December";
+          break;
+        default:
+          month = nums[1];
+          break;
+      }
+      dateText = month + " " + day + ", " + year;
+      return dateText;
     }
   }/*,
   created() {
