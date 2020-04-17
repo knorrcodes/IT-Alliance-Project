@@ -59,14 +59,10 @@ if ($request == "2") {
   $tshirt_l = $_GET['tshirt_l'];
   $tshirt_xl = $_GET['tshirt_xl'];
 
-  $projectData = $mysqli->query("SELECT * FROM {$table_name} WHERE name='".$name."'");
+  $projectData = $mysqli->query("SELECT * FROM ".$table_name." WHERE name='".$name."'");
 
   if(mysqli_num_rows($projectData) == 0){
-    $mysqli->query("INSERT INTO {$table_name}(priority,name,start_date,projected_date,completed_date,"+
-      "description,client,client_email,team_member_names,tshirt_s,tshirt_m,tshirt_l,tshirt_xl) "+
-      "VALUES('".$priority."','".$name."','".$start_date."','".$projected_date."','".$completed_date."',
-      '".$description."','".$client."','".$client_email."','".$team_member_names."''".$tshirt_s."','".$tshirt_m."',
-      '".$tshirt_l."','".$tshirt_xl."',)");
+    $mysqli->query("INSERT INTO ".$table_name." (priority,status,name,start_date,projected_date,completed_date,description,client,client_email,team_member_names,tshirt_s,tshirt_m,tshirt_l,tshirt_xl) VALUES('".$priority."','".$status."','".$name."','".$start_date."','".$projected_date."','".$completed_date."','".$description."','".$client."','".$client_email."','".$team_member_names."','".$tshirt_s."','".$tshirt_m."','".$tshirt_l."','".$tshirt_xl."')");
     echo "Insert successfully";
   }else{
     echo "Project already exists.";

@@ -209,7 +209,7 @@
               <b-row no-gutters>
                 <v-date-picker 
                 :popover="{ placement: 'bottom', visibility: 'click' }" 
-                class="ml-2 mt-2" 
+                class="ml-2 mt-2"
                 v-model="addForm.start_date"
                 required
                 :input-props="{placeholder: 'Select date'}"></v-date-picker>
@@ -320,10 +320,9 @@
 
             <b-col md="8"> 
               <b-row no-gutters> 
-                <b-button class="m-1" id="clientTool" variant="outline-dark">{{ project.client }}</b-button>
-                <b-tooltip target="clientTool" triggers="hover" placement="right" variant="light">
-                  {{ getEmail(project.client_email) }}
-                  <a :href="emailLink">{{ project.client_email }}</a>
+                <b-button class="m-1" :id="project.client" variant="outline-dark">{{ project.client }}</b-button>
+                <b-tooltip :target="project.client" triggers="hover" placement="right" variant="light">
+                  <a :href="getEmail(project.client_email)">{{ project.client_email }}</a>
                 </b-tooltip>
               </b-row>
             </b-col>
@@ -603,7 +602,7 @@ export default /*class listPage extends Vue*/ {
         table_name: '',
         id: 0,
         priority: '3 - Normal',
-        status: 'proposed',
+        status: 'Proposed',
         name: '',
         start_date: '',
         projected_date: '',
@@ -624,7 +623,6 @@ export default /*class listPage extends Vue*/ {
       dropdownText: 'Select Semester',
       dropdownText1: 'Select Semester',
       passwordType: 'password',
-      emailLink: '',
       dropdownVariant: 'dark'
     }
   },
@@ -718,18 +716,27 @@ export default /*class listPage extends Vue*/ {
     }, */
     addRecord(evt) {
       evt.preventDefault();
-      alert(this.addForm.start_date);
       if(this.loggedIn == true){
         axios.get('http://localhost/ajaxFile.php', {
           params: {
             request: 2,
-            table_name: this.table_name,
+            table_name: this.addForm.table_name,
             username: this.username,
             password: this.password,
-            name: this.name,
-            description: this.description,
-            client: this.client,
-            team_member_names: this.team_member_names
+            priority: this.addForm.priority,
+            status: this.addForm.status,
+            name: this.addForm.name,
+            start_date: this.addForm.start_date.toISOString().substring(0,10),
+            projected_date: this.addForm.projected_date.toISOString().substring(0,10),
+            completed_date: this.addForm.completed_date.toISOString().substring(0,10),
+            description: this.addForm.description,
+            client: this.addForm.client,
+            client_email: this.addForm.client_email,
+            team_member_names: this.addForm.team_member_names,
+            tshirt_s: this.addForm.tshirt_s,
+            tshirt_m: this.addForm.tshirt_m,
+            tshirt_l: this.addForm.tshirt_l,
+            tshirt_xl: this.addForm.tshirt_xl
           }
         })
         .then(response => {
@@ -738,10 +745,22 @@ export default /*class listPage extends Vue*/ {
           this.allRecords();
 
           // Empty values
-          this.name = '';
-          this.description = '';
-          this.client = '';
-          this.team_member_names = '';
+          this.addForm.table_name = '';
+          this.addForm.id = 0;
+          this.addForm.priority = '3 - Normal';
+          this.addForm.status = 'Proposed';
+          this.addForm.name = '';
+          this.addForm.start_date = '';
+          this.addForm.projected_date = '';
+          this.addForm.completed_date = '';
+          this.addForm.description = '';
+          this.addForm.client = '';
+          this.addForm.client_email = '';
+          this.addForm.team_member_names = '';
+          this.addForm.tshirt_s = '0';
+          this.addForm.tshirt_m = '0';
+          this.addForm.tshirt_l = '0';
+          this.addForm.tshirt_xl = '0';
   
           alert(response.data);
         })
@@ -934,7 +953,8 @@ export default /*class listPage extends Vue*/ {
       this.loginForm.pass = '';
     },
     getEmail(email) {
-      this.emailLink = "mailto:" + email;
+      let emailLink = "mailto:" + email;
+      return emailLink;
     },
     formatDate(inDate) {
       var dateText = "";
