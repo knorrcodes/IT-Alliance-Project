@@ -44,15 +44,29 @@ if ($request == "1") {
 
 // addRecord()
 if ($request == "2") {
+  $priority = $_GET['priority'];
+  $status = $_GET['status'];
   $name = $_GET['name'];
+  $start_date = $_GET['start_date'];
+  $projected_date = $_GET['projected_date'];
+  $completed_date = $_GET['completed_date'];
   $description = $_GET['description'];
   $client = $_GET['client'];
+  $client_email = $_GET['client_email'];
   $team_member_names = $_GET['team_member_names'];
+  $tshirt_s = $_GET['tshirt_s'];
+  $tshirt_m = $_GET['tshirt_m'];
+  $tshirt_l = $_GET['tshirt_l'];
+  $tshirt_xl = $_GET['tshirt_xl'];
 
   $projectData = $mysqli->query("SELECT * FROM {$table_name} WHERE name='".$name."'");
 
   if(mysqli_num_rows($projectData) == 0){
-    $mysqli->query("INSERT INTO {$table_name}(name,description,client,team_member_names) VALUES('".$name."','".$description."','".$client."','".$team_member_names."')");
+    $mysqli->query("INSERT INTO {$table_name}(priority,name,start_date,projected_date,completed_date,"+
+      "description,client,client_email,team_member_names,tshirt_s,tshirt_m,tshirt_l,tshirt_xl) "+
+      "VALUES('".$priority."','".$name."','".$start_date."','".$projected_date."','".$completed_date."',
+      '".$description."','".$client."','".$client_email."','".$team_member_names."''".$tshirt_s."','".$tshirt_m."',
+      '".$tshirt_l."','".$tshirt_xl."',)");
     echo "Insert successfully";
   }else{
     echo "Project already exists.";
