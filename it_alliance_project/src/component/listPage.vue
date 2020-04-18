@@ -7,7 +7,7 @@
       <h1>Spring 2020</h1>
         <ul>
           <li onclick="alert('Team name: IT Alliance \nMembers: Darrin Knorr, Joe Massaro, Bassim Alamer, Josh Martin \nSemester: Spring 2020')">IT Alliance Project</li>
-          <li onclick="alert('Team name: AI ChatBot for Customer Serice with SMS Text messenger Bot \nMembers Albert Huang, Austin Steele, Edward Yevincy Quentin Peters, Elizabeth Fleming \n Semester: Spring 2020')" >AI ChatBot for Customer Serice with SMS Text messenger Bot</li>
+          <li onclick="alert('Team name: AI ChatBot for Customer Serice with SMS Text messenger Bot \nMembers Albert Huang, Austin Steele, Edward Yevincy Quentin Peters, Elizabeth Fleming \n Semester: Spring 2020')" >AI ChatBot for Customer Service with SMS Text messenger Bot</li>
           <li onclick="alert('Team name: Champion Labs \nMembers: Payton Sharpe, Joshua Joines, Hans Lagenour, Austin Garrison, Nicholas Scheller \nSemester: Spring 2020')">Champion Lab</li>
           <li onclick="alert('Team name: WAZE: city transportation analysis \nMembers: Sara Kniepmann, Austin Scherer, Celina Snyder, Kenlee Rumer, Alex Markle \nSemester: Spring 2020')">Evansville Association for the Blind</li>
           <li onclick="alert('Team name: Evansville Association for the Blind \nMembers: Raquel Harvey, Nathan Hall, Garrett Hopf\nSemester: Spring 2020')">Silent Auction for ECTA (Evansville Community Tennis Association)</li>
@@ -23,10 +23,42 @@
       <b-dropdown-item @click='spring20(0)'>Spring 2020</b-dropdown-item>
       <b-dropdown-item @click='fall20(0)'>Fall 2020</b-dropdown-item>
     </b-dropdown>
+  
+    <b-button @click='logout()' variant="primary" v-if="loggedIn">Log Out</b-button>
 
-    <br><br>
+    <b-button @click='login()' variant="primary" v-if="!show">Log In to Make Changes</b-button>
 
-    <b-form @submit="addRecord">
+    <b-button @click='addClick()' class="ml-2" variant="primary" v-if="loggedIn && !addMode">Add Record</b-button>
+
+    <b-alert variant="success" show v-if="loggedIn">Logged in as {{this.username}}</b-alert>
+    <b-alert variant="danger" dismissible @dismissed="auth=true" show v-if="!auth">Username or Password Incorrect. Try Again.</b-alert>
+    
+    <!-- Login Bar -->
+    <b-form inline class="justify-content-center" @submit="onSubmit" v-if="show && !loggedIn">
+      <b-form-input
+          class="mb-2 mr-sm-2 mb-sm-0"
+          v-model="loginForm.user"
+          required
+          type="text"
+          placeholder="Username"
+      ></b-form-input>
+      <b-form-input
+          class="mb-2 mr-sm-2 mb-sm-0"
+          v-model="loginForm.pass"
+          required
+          :type="passwordType"
+          placeholder="Password"
+      ></b-form-input>
+
+      <b-form-checkbox v-model="passwordType" value="text" unchecked-value="password" class="mb-2 mr-sm-2 mb-sm-0">Show Password</b-form-checkbox>  
+      <b-button type="submit" class="mb-2 mr-sm-2 mb-sm-0" variant="primary">Submit</b-button>
+      <b-button @click="onClear()" class="mb-2 mr-sm-2 mb-sm-0" variant="outline-primary">Clear</b-button>
+      <b-button @click='onCancel()' class="mb-2 mr-sm-2 mb-sm-0" variant="outline-dark">Cancel</b-button>
+      <br><br>
+    </b-form>
+
+    <!-- Add / Modify Form -->
+    <b-form v-if="(addMode || modifyMode) && loggedIn" @submit="addRecord">
       <b-row no-gutters>
         <b-col md="8">
           <!-- Project Name -->
@@ -84,7 +116,7 @@
 
             <b-col md="9">
               <b-row no-gutters>
-                <b-form-input class="mt-2 ml-2" required v-model="addForm.team_member_names" placeholder="Enter team members"></b-form-input>
+                <b-form-textarea class="mt-2 ml-2" max-rows="8" required v-model="addForm.team_member_names" placeholder="Enter team members"></b-form-textarea>
               </b-row>
             </b-col>
           </b-row>
@@ -100,7 +132,7 @@
             <b-col md="9">
               <b-row no-gutters>
                 <h5 class="ml-2 mt-2">S : </h5>
-                <b-dropdown size="sm" v-model="addForm.tshirt_s" variant="dark" class="ml-1 mt-2 wrap-dropdown" :text="addForm.tshirt_s">
+                <b-dropdown size="sm" v-model="addForm.tshirt_s" variant="dark" class="ml-1 mt-2" :text="addForm.tshirt_s">
                   <b-dropdown-item @click="setTshirtS(0)">0</b-dropdown-item>
                   <b-dropdown-item @click="setTshirtS(1)">1</b-dropdown-item>
                   <b-dropdown-item @click="setTshirtS(2)">2</b-dropdown-item>
@@ -110,7 +142,7 @@
                   <b-dropdown-item @click="setTshirtS(6)">6</b-dropdown-item>
                 </b-dropdown>
                 <h5 class="ml-3 mt-2">M : </h5>
-                <b-dropdown size="sm" v-model="addForm.tshirt_m" variant="dark" class="ml-1 mt-2 wrap-dropdown" :text="addForm.tshirt_m">
+                <b-dropdown size="sm" v-model="addForm.tshirt_m" variant="dark" class="ml-1 mt-2" :text="addForm.tshirt_m">
                   <b-dropdown-item @click="setTshirtM(0)">0</b-dropdown-item>
                   <b-dropdown-item @click="setTshirtM(1)">1</b-dropdown-item>
                   <b-dropdown-item @click="setTshirtM(2)">2</b-dropdown-item>
@@ -120,7 +152,7 @@
                   <b-dropdown-item @click="setTshirtM(6)">6</b-dropdown-item>
                 </b-dropdown>
                 <h5 class="ml-3 mt-2">L : </h5>
-                <b-dropdown size="sm" v-model="addForm.tshirt_l" variant="dark" class="ml-1 mt-2 wrap-dropdown" :text="addForm.tshirt_l">
+                <b-dropdown size="sm" v-model="addForm.tshirt_l" variant="dark" class="ml-1 mt-2" :text="addForm.tshirt_l">
                   <b-dropdown-item @click="setTshirtL(0)">0</b-dropdown-item>
                   <b-dropdown-item @click="setTshirtL(1)">1</b-dropdown-item>
                   <b-dropdown-item @click="setTshirtL(2)">2</b-dropdown-item>
@@ -130,7 +162,7 @@
                   <b-dropdown-item @click="setTshirtL(6)">6</b-dropdown-item>
                 </b-dropdown>
                 <h5 class="ml-3 mt-2">XL : </h5>
-                <b-dropdown size="sm" v-model="addForm.tshirt_xl" variant="dark" class="ml-1 mt-2 wrap-dropdown" :text="addForm.tshirt_xl">
+                <b-dropdown size="sm" v-model="addForm.tshirt_xl" variant="dark" class="ml-1 mt-2" :text="addForm.tshirt_xl">
                   <b-dropdown-item @click="setTshirtXL(0)">0</b-dropdown-item>
                   <b-dropdown-item @click="setTshirtXL(1)">1</b-dropdown-item>
                   <b-dropdown-item @click="setTshirtXL(2)">2</b-dropdown-item>
@@ -174,7 +206,13 @@
 
             <b-col md="9">
               <b-row no-gutters>
-                <b-button variant="warning" class="ml-2 mt-2">Proposed</b-button>
+                <b-dropdown :disabled="!modifyMode" :variant="changeStatusColor(addForm.status)" class="ml-2 mt-2" :text="addForm.status">
+                  <b-dropdown-item @click="setStatus('Proposed')" variant="warning">Proposed</b-dropdown-item>
+                  <b-dropdown-item @click="setStatus('Approved')" variant="success">Approved</b-dropdown-item>
+                  <b-dropdown-item @click="setStatus('In Progress')" variant="primary">In Progress</b-dropdown-item>
+                  <b-dropdown-item @click="setStatus('Waiting')" variant="danger">Waiting</b-dropdown-item>
+                  <b-dropdown-item @click="setStatus('Completed')" variant="dark">Completed</b-dropdown-item>
+                </b-dropdown>
               </b-row>
             </b-col>
           </b-row>
@@ -189,7 +227,7 @@
 
             <b-col md="9">
               <b-row no-gutters>
-                <b-dropdown id="semesterSelect" class="ml-2 mt-2" variant="primary" :text="dropdownText1">
+                <b-dropdown id="semesterSelect" class="ml-2 mt-2" variant="primary" :text="addForm.semester">
                   <b-dropdown-item @click='spring20(1)'>Spring 2020</b-dropdown-item>
                   <b-dropdown-item @click='fall20(1)'>Fall 2020</b-dropdown-item>
                 </b-dropdown>
@@ -272,7 +310,7 @@
             </b-col>
           </b-row>
 
-          <!-- Buttons -->
+          <!-- Submit / Clear / Cancel Buttons -->
           <b-row no-gutters>
             <b-col md="3">
             </b-col>
@@ -280,18 +318,17 @@
             <b-col md="9">
               <b-row no-gutters>
                 <b-button type="submit" class="ml-2 mt-2" variant="primary">Submit</b-button>
-                <b-button @click="addFormClear()" class="ml-2 mt-2" variant="outline-primary">Clear</b-button>
+                <b-button @click="addFormClear()" v-if="addMode" class="ml-2 mt-2" variant="outline-primary">Clear</b-button>
                 <b-button @click='addFormCancel()' class="ml-2 mt-2" variant="outline-dark">Cancel</b-button>
               </b-row>
             </b-col>
           </b-row>
         </b-col>
       </b-row>
-      
+      <br><br>
     </b-form>
 
-    <br><br>
-
+    <!-- Project List -->
     <b-card no-body v-for='project in project_table'>
       <b-row no-gutters>
         <b-col md="6">
@@ -354,45 +391,13 @@
             <b-col md="8">
               <b-row no-gutters>
                 <h5 class="ml-1 mt-2">S : </h5>
-                <b-dropdown size="sm" :disabled="true" variant="dark" class="ml-1 mt-2 wrap-dropdown" :text="project.tshirt_s">
-                  <b-dropdown-item>0</b-dropdown-item>
-                  <b-dropdown-item>1</b-dropdown-item>
-                  <b-dropdown-item>2</b-dropdown-item>
-                  <b-dropdown-item>3</b-dropdown-item>
-                  <b-dropdown-item>4</b-dropdown-item>
-                  <b-dropdown-item>5</b-dropdown-item>
-                  <b-dropdown-item>6</b-dropdown-item>
-                </b-dropdown>
+                <b-button size="sm" variant="dark" class="ml-1 mt-2">{{project.tshirt_s}}</b-button>
                 <h5 class="ml-3 mt-2">M : </h5>
-                <b-dropdown size="sm" :disabled="true" variant="dark" class="ml-1 mt-2 wrap-dropdown" :text="project.tshirt_m">
-                  <b-dropdown-item>0</b-dropdown-item>
-                  <b-dropdown-item>1</b-dropdown-item>
-                  <b-dropdown-item>2</b-dropdown-item>
-                  <b-dropdown-item>3</b-dropdown-item>
-                  <b-dropdown-item>4</b-dropdown-item>
-                  <b-dropdown-item>5</b-dropdown-item>
-                  <b-dropdown-item>6</b-dropdown-item>
-                </b-dropdown>
+                <b-button size="sm" variant="dark" class="ml-1 mt-2">{{project.tshirt_m}}</b-button>
                 <h5 class="ml-3 mt-2">L : </h5>
-                <b-dropdown size="sm" :disabled="true" variant="dark" class="ml-1 mt-2 wrap-dropdown" :text="project.tshirt_l">
-                  <b-dropdown-item>0</b-dropdown-item>
-                  <b-dropdown-item>1</b-dropdown-item>
-                  <b-dropdown-item>2</b-dropdown-item>
-                  <b-dropdown-item>3</b-dropdown-item>
-                  <b-dropdown-item>4</b-dropdown-item>
-                  <b-dropdown-item>5</b-dropdown-item>
-                  <b-dropdown-item>6</b-dropdown-item>
-                </b-dropdown>
+                <b-button size="sm" variant="dark" class="ml-1 mt-2">{{project.tshirt_l}}</b-button>
                 <h5 class="ml-3 mt-2">XL : </h5>
-                <b-dropdown size="sm" :disabled="true" variant="dark" class="ml-1 mt-2 wrap-dropdown" :text="project.tshirt_xl">
-                  <b-dropdown-item>0</b-dropdown-item>
-                  <b-dropdown-item>1</b-dropdown-item>
-                  <b-dropdown-item>2</b-dropdown-item>
-                  <b-dropdown-item>3</b-dropdown-item>
-                  <b-dropdown-item>4</b-dropdown-item>
-                  <b-dropdown-item>5</b-dropdown-item>
-                  <b-dropdown-item>6</b-dropdown-item>
-                </b-dropdown>
+                <b-button size="sm" variant="dark" class="ml-1 mt-2">{{project.tshirt_xl}}</b-button>
               </b-row>
             </b-col>
           </b-row>
@@ -407,13 +412,7 @@
 
             <b-col md="8">
               <b-row no-gutters>
-                <b-dropdown :disabled="false" :variant="changeStatusColor(project.status)" class="ml-1 mt-2" :text="project.status">
-                  <b-dropdown-item variant="warning">Proposed</b-dropdown-item>
-                  <b-dropdown-item variant="success">Approved</b-dropdown-item>
-                  <b-dropdown-item variant="primary">In Progress</b-dropdown-item>
-                  <b-dropdown-item variant="danger">Waiting</b-dropdown-item>
-                  <b-dropdown-item variant="dark">Completed</b-dropdown-item>
-                </b-dropdown>
+                <b-button :variant="changeStatusColor(project.status)" class="ml-1 mt-2">{{project.status}}</b-button>
               </b-row>
             </b-col>
           </b-row>
@@ -428,13 +427,7 @@
 
             <b-col md="8">
               <b-row no-gutters>
-                <b-dropdown :disabled="false" :variant="changePriorityColor(project.priority)" class="ml-1 mt-2" :text="project.priority">
-                  <b-dropdown-item variant="danger">5 - Very High</b-dropdown-item>
-                  <b-dropdown-item variant="warning">4 - High</b-dropdown-item>
-                  <b-dropdown-item variant="success">3 - Normal</b-dropdown-item>
-                  <b-dropdown-item variant="primary">2 - Low</b-dropdown-item>
-                  <b-dropdown-item variant="info">1 - Very Low</b-dropdown-item>
-                </b-dropdown>
+                <b-button :variant="changePriorityColor(project.priority)" class="ml-1 mt-2">{{project.priority}}</b-button>
               </b-row>
             </b-col>
           </b-row>
@@ -498,78 +491,22 @@
               </b-row>
             </b-col>
           </b-row>
+
+          <!-- Update / Delete Buttons -->
+          <b-row v-if="loggedIn" no-gutters>
+            <b-col md="4"></b-col>
+
+            <b-col md="8">
+              <b-row no-gutters>
+                <b-button @click="modifyRecord(project)" class="ml-2 my-2" variant="primary">Modify</b-button>
+                <b-button @click="deleteRecord(project.id)" class="ml-2 my-2" variant="danger">Delete</b-button>
+              </b-row>
+            </b-col>
+          </b-row>
         </b-col>
       </b-row>
       
     </b-card>
-
-    <br><br>
-
-    <table id="project_table" border='1' width='100%' style='border-collapse: collapse;'>
-      <tr>
-        <th style="display:none;">ID</th>
-        <th>Project Name</th>
-        <th>Project Description</th>
-        <th>Client</th>
-        <th>Team Members</th>
-        <th :style="adminButtons"></th>
-      </tr>
-
-      <tr v-for='project in project_table'>
-        <td style="display:none;">{{ project.id }}</td>
-        <td>{{ project.name }}</td>
-        <td>{{ project.description }}</td>
-        <td>{{ project.client }}</td>
-        <td>{{ project.team_member_names }}</td>
-        <td :style="adminButtons"><input type='button' value='Update' @click='updateRecord(project.id)'>&nbsp;
-        <input type='button' value='Delete' @click='deleteRecord(project.id)'></td>
-      </tr>
-
-      <!-- Add -->
-      <tr :style="adminButtons">
-        <td><input type='text' v-model='name'></td>
-        <td><input type='text' v-model='description'></td>
-        <td><input type='text' v-model='client'></td>
-        <td><input type='text' v-model='team_member_names'></td>
-        <td><input type='button' value='Add' @click='addRecord()'></td>
-      </tr>
-    </table>
-    
-    <br><br>
-
-    <b-alert variant="success" show v-if="loggedIn">Logged in as {{this.username}}</b-alert>
-
-    <b-alert variant="danger" dismissible @dismissed="auth=true" show v-if="!auth">Username or Password Incorrect. Try Again.</b-alert>
-
-    <b-button @click='logout()' variant="primary" v-if="loggedIn">Log Out</b-button>
-
-    <b-button @click='login()' variant="primary" v-if="!show">Log In to Make Changes</b-button>
-
-    <!-- Login Bar -->
-    <b-form inline class="justify-content-center" @submit="onSubmit" v-if="show && !loggedIn">
-      <b-form-input
-          class="mb-2 mr-sm-2 mb-sm-0"
-          v-model="loginForm.user"
-          required
-          type="text"
-          placeholder="Username"
-      ></b-form-input>
-      <b-form-input
-          class="mb-2 mr-sm-2 mb-sm-0"
-          v-model="loginForm.pass"
-          required
-          :type="passwordType"
-          placeholder="Password"
-      ></b-form-input>
-
-      <b-form-checkbox v-model="passwordType" value="text" unchecked-value="password" class="mb-2 mr-sm-2 mb-sm-0">Show Password</b-form-checkbox>  
-      <b-button type="submit" class="mb-2 mr-sm-2 mb-sm-0" variant="primary">Submit</b-button>
-      <b-button @click="onClear()" class="mb-2 mr-sm-2 mb-sm-0" variant="outline-primary">Clear</b-button>
-      <b-button @click='onCancel()' class="mb-2 mr-sm-2 mb-sm-0" variant="outline-dark">Cancel</b-button>
-    </b-form>
-
-    <br><br>
-  
   </div>
 </template>
 
@@ -603,6 +540,7 @@ export default /*class listPage extends Vue*/ {
         id: 0,
         priority: '3 - Normal',
         status: 'Proposed',
+        semester: 'Select Semester',
         name: '',
         start_date: '',
         projected_date: '',
@@ -621,13 +559,14 @@ export default /*class listPage extends Vue*/ {
       auth: true,
       adminButtons: 'display:none;',
       dropdownText: 'Select Semester',
-      dropdownText1: 'Select Semester',
       passwordType: 'password',
-      dropdownVariant: 'dark'
+      dropdownVariant: 'dark',
+      addMode: false,
+      modifyMode: false
     }
   },
   methods: {
-    italliance: function(){
+    italliance(){
       alert("test hello");
     },
     allRecords() {
@@ -663,33 +602,64 @@ export default /*class listPage extends Vue*/ {
           console.log(error.config);
         });
       }
-      
     },
-    /* addRecord() {
-      if(this.name != '' && this.description != '' && this.client != '' && this.team_member_names != ''){
+    addRecord(evt) {
+      evt.preventDefault();
+      let completedDate = '';
+      if (this.addForm.completed_date != '') {
+        completedDate = this.addForm.completed_date.toISOString().substring(0,10);
+      }
+
+      if(this.loggedIn == true && this.addMode == true){
         axios.get('http://localhost/ajaxFile.php', {
           params: {
-            request: 2,
-            table_name: this.table_name,
+            request: '2',
+            table_name: this.addForm.table_name,
             username: this.username,
             password: this.password,
-            name: this.name,
-            description: this.description,
-            client: this.client,
-            team_member_names: this.team_member_names
+            priority: this.addForm.priority,
+            status: this.addForm.status,
+            semester: this.addForm.semester,
+            name: this.addForm.name,
+            start_date: this.addForm.start_date.toISOString().substring(0,10),
+            projected_date: this.addForm.projected_date.toISOString().substring(0,10),
+            completed_date: completedDate,
+            description: this.addForm.description,
+            client: this.addForm.client,
+            client_email: this.addForm.client_email,
+            team_member_names: this.addForm.team_member_names,
+            tshirt_s: this.addForm.tshirt_s,
+            tshirt_m: this.addForm.tshirt_m,
+            tshirt_l: this.addForm.tshirt_l,
+            tshirt_xl: this.addForm.tshirt_xl
           }
         })
         .then(response => {
-
           // Fetch records
           this.allRecords();
 
           // Empty values
-          this.name = '';
-          this.description = '';
-          this.client = '';
-          this.team_member_names = '';
-  
+          this.addForm.table_name = '';
+          this.addForm.id = 0;
+          this.addForm.priority = '3 - Normal';
+          this.addForm.status = 'Proposed';
+          this.addForm.semester = 'Select Semester';
+          this.addForm.name = '';
+          this.addForm.start_date = '';
+          this.addForm.projected_date = '';
+          this.addForm.completed_date = '';
+          this.addForm.description = '';
+          this.addForm.client = '';
+          this.addForm.client_email = '';
+          this.addForm.team_member_names = '';
+          this.addForm.tshirt_s = '0';
+          this.addForm.tshirt_m = '0';
+          this.addForm.tshirt_l = '0';
+          this.addForm.tshirt_xl = '0';
+
+          // Turn Off Add Form
+          this.addMode = false;
+
           alert(response.data);
         })
         .catch(error => {
@@ -711,20 +681,21 @@ export default /*class listPage extends Vue*/ {
           console.log(error.config);
         });
       }else{
-        alert('Please fill all fields.');
+        this.updateRecord();
       }
-    }, */
-    addRecord(evt) {
-      evt.preventDefault();
-      if(this.loggedIn == true){
+    },
+    updateRecord() {
+      if (this.loggedIn && this.modifyMode) {
         axios.get('http://localhost/ajaxFile.php', {
           params: {
-            request: 2,
+            request: '3',
             table_name: this.addForm.table_name,
             username: this.username,
             password: this.password,
+            id: this.addForm.id,
             priority: this.addForm.priority,
             status: this.addForm.status,
+            semester: this.addForm.semester,
             name: this.addForm.name,
             start_date: this.addForm.start_date.toISOString().substring(0,10),
             projected_date: this.addForm.projected_date.toISOString().substring(0,10),
@@ -740,7 +711,6 @@ export default /*class listPage extends Vue*/ {
           }
         })
         .then(response => {
-
           // Fetch records
           this.allRecords();
 
@@ -749,6 +719,7 @@ export default /*class listPage extends Vue*/ {
           this.addForm.id = 0;
           this.addForm.priority = '3 - Normal';
           this.addForm.status = 'Proposed';
+          this.addForm.semester = 'Select Semester';
           this.addForm.name = '';
           this.addForm.start_date = '';
           this.addForm.projected_date = '';
@@ -761,62 +732,9 @@ export default /*class listPage extends Vue*/ {
           this.addForm.tshirt_m = '0';
           this.addForm.tshirt_l = '0';
           this.addForm.tshirt_xl = '0';
-  
-          alert(response.data);
-        })
-        .catch(error => {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
-          }
-          console.log(error.config);
-        });
-      }else{
-        alert('Please log in to add a project.');
-      }
-    },
-    updateRecord(id) {
 
-      // Read value from Textbox
-      var project_name = this.name;
-      var project_description = this.description;
-      var project_client = this.client;
-      var project_team_member_names = this.team_member_names;
-
-      if (project_name !='' || project_description !='' || project_client != '' || project_team_member_names != '' ) {
-        axios.get('http://localhost/ajaxFile.php', {
-          params: {
-            request: 3,
-            table_name: this.table_name,
-            username: this.username,
-            password: this.password,
-            id: id,
-            name: project_name,
-            description: project_description,
-            client: project_client,
-            team_member_names: project_team_member_names
-          }
-        })
-        .then(response => {
-          // Fetch records
-          this.allRecords();
-
-          // Empty values
-          this.name = '';
-          this.description = '';
-          this.client = '';
-          this.team_member_names = '';
+          // Turn Off Add Form
+          this.modifyMode = false;
 
           alert(response.data);
         })
@@ -838,15 +756,13 @@ export default /*class listPage extends Vue*/ {
           }
           console.log(error.config);
         });
-      }else{
-        alert('Please fill in the field you wish to update.');
       }
     },
     deleteRecord(id) {
       if (confirm('Are you sure you want to delete?')) {
         axios.get('http://localhost/ajaxFile.php', {
           params: {
-            request: 4,
+            request: '4',
             table_name: this.table_name,
             username: this.username,
             password: this.password,
@@ -857,10 +773,10 @@ export default /*class listPage extends Vue*/ {
           this.allRecords();
           
           // Empty values
-          this.name = '';
+          /* this.name = '';
           this.description = '';
           this.client = '';
-          this.team_member_names = '';
+          this.team_member_names = ''; */
 
           alert(response.data);
         })
@@ -893,7 +809,7 @@ export default /*class listPage extends Vue*/ {
           break;
         case 1:
           this.addForm.table_name = 'spring20';
-          this.dropdownText1 = 'Spring 2020';
+          this.addForm.semester = 'Spring 2020';
           break;
       }
     },
@@ -906,7 +822,7 @@ export default /*class listPage extends Vue*/ {
           break;
         case 1:
           this.addForm.table_name = 'fall20';
-          this.dropdownText1 = 'Fall 2020';
+          this.addForm.semester = 'Fall 2020';
           break;
       }
     },
@@ -1029,6 +945,9 @@ export default /*class listPage extends Vue*/ {
           break;
       }
       return variant;
+    },
+    setStatus(inStatus) {
+      this.addForm.status = inStatus;
     },
     changePriorityColor(inPriority) {
       var variant = "";
@@ -1172,10 +1091,122 @@ export default /*class listPage extends Vue*/ {
       }
     },
     addFormClear() {
-
+      this.addForm.table_name = '';
+      this.addForm.id = 0;
+      this.addForm.priority = '3 - Normal';
+      this.addForm.status = 'Proposed';
+      this.addForm.name = '';
+      this.addForm.semester = 'Select Semester';
+      this.addForm.start_date = '';
+      this.addForm.projected_date = '';
+      this.addForm.completed_date = '';
+      this.addForm.description = '';
+      this.addForm.client = '';
+      this.addForm.client_email = '';
+      this.addForm.team_member_names = '';
+      this.addForm.tshirt_s = '0';
+      this.addForm.tshirt_m = '0';
+      this.addForm.tshirt_l = '0';
+      this.addForm.tshirt_xl = '0';
     },
     addFormCancel() {
+      // Reset Add Form to Default
+      this.addForm.table_name = '';
+      this.addForm.id = 0;
+      this.addForm.priority = '3 - Normal';
+      this.addForm.status = 'Proposed';
+      this.addForm.name = '';
+      this.addForm.semester = 'Select Semester';
+      this.addForm.start_date = '';
+      this.addForm.projected_date = '';
+      this.addForm.completed_date = '';
+      this.addForm.description = '';
+      this.addForm.client = '';
+      this.addForm.client_email = '';
+      this.addForm.team_member_names = '';
+      this.addForm.tshirt_s = '0';
+      this.addForm.tshirt_m = '0';
+      this.addForm.tshirt_l = '0';
+      this.addForm.tshirt_xl = '0';
 
+      // Turn Off Add Form
+      this.addMode = false;
+      this.modifyMode = false;
+    },
+    modifyRecord(project) {
+      this.addMode = false;
+      this.modifyMode = true;
+
+      window.scrollTo(0,0);
+
+      let start = project.start_date.split('-');
+      start[1]--;
+      let startDate = new Date(start[0], start[1], start[2]);
+
+      let projected = project.projected_date.split('-');
+      projected[1]--;
+      let projectedDate = new Date(projected[0], projected[1], projected[2]);
+
+      let completedDate = '';
+      if (project.completed_date != null) {
+        let completed = project.completed_date.split('-');
+        completed[1]--;
+        completedDate = new Date(completed[0], completed[1], completed[2]);
+      }
+
+      // Fill in Add Form with Existing Data
+      this.addForm.table_name = this.getTableName(project.semester);
+      this.addForm.id = project.id;
+      this.addForm.priority = project.priority;
+      this.addForm.status = project.status;
+      this.addForm.semester = project.semester;
+      this.addForm.name = project.name;
+      this.addForm.start_date = startDate;
+      this.addForm.projected_date = projectedDate;
+      this.addForm.completed_date = completedDate;
+      this.addForm.description = project.description;
+      this.addForm.client = project.client;
+      this.addForm.client_email = project.client_email;
+      this.addForm.team_member_names = project.team_member_names;
+      this.addForm.tshirt_s = project.tshirt_s;
+      this.addForm.tshirt_m = project.tshirt_m;
+      this.addForm.tshirt_l = project.tshirt_l;
+      this.addForm.tshirt_xl = project.tshirt_xl;
+    },
+    addClick() {
+      this.addMode = true;
+      this.modifyMode = false;
+
+      // Empty values
+      this.addForm.table_name = '';
+      this.addForm.id = 0;
+      this.addForm.priority = '3 - Normal';
+      this.addForm.status = 'Proposed';
+      this.addForm.semester = 'Select Semester';
+      this.addForm.name = '';
+      this.addForm.start_date = '';
+      this.addForm.projected_date = '';
+      this.addForm.completed_date = '';
+      this.addForm.description = '';
+      this.addForm.client = '';
+      this.addForm.client_email = '';
+      this.addForm.team_member_names = '';
+      this.addForm.tshirt_s = '0';
+      this.addForm.tshirt_m = '0';
+      this.addForm.tshirt_l = '0';
+      this.addForm.tshirt_xl = '0';
+    },
+    getTableName(semester) {
+      let table_name = '';
+      switch(semester) {
+        case 'Spring 2020':
+          table_name = 'spring20';
+          break;
+        case 'Fall 2020':
+          table_name = 'fall20';
+          break;
+      }
+      return table_name;
     }
   }/*,
   created() {
@@ -1191,14 +1222,4 @@ hr {
 li {
   font-size: 20px;
 }
-/* Removes the min-width on the dropdown-menu and sets the width to 100% of the parent */
-.wrap-dropdown .dropdown-menu {
-  display: contents;
-  width: 100%;
-  min-width: 0rem;
-}
-/* applies white-space: normal to all tags inside the dropdown-menu */
-/* .wrap-dropdown * {
-  white-space: normal;
-} */
 </style>
