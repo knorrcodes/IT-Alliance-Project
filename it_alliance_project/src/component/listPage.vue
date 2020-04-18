@@ -18,6 +18,70 @@
     </div>
     <h1 class="text-center">Projects by Semester</h1>
     
+    <div>
+      <b-row no-gutters>
+        <b-form-file
+          id="fileInput"
+          v-model="files"
+          :state="Boolean(files)"
+          placeholder="Choose a file or drop one here"
+          drop-placeholder="Drop file here"
+          class="mx-5"
+          multiple
+        ></b-form-file>
+      </b-row>
+      <b-row no-gutters>
+        <b-button v-if='files' @click='toBlob()'>Upload</b-button>
+        <b-button v-if='blobs' @click='addFile()'>Add File</b-button>
+        <b-button @click='getFiles()'>Get Files</b-button>
+      </b-row>
+      <!-- <b-row v-for='file in files' no-gutters>
+        <div class="mt-3 ml-5">Selected file(s): {{ file ? file.name : '' }}</div>
+      </b-row> -->
+      <b-row v-if='files' no-gutters>
+        <p>Files:</p>
+        <p>{{files.length}}</p>
+        <p>{{files}}</p>
+      </b-row>
+
+      <b-row v-if='blobs' no-gutters>
+        <p>Blobs:</p>
+        <p>{{blobs.length}}</p>
+        <p>{{blobs}}</p>
+      </b-row>
+
+      <b-row v-for='file in files' no-gutters>
+        <p>Before File:</p>
+        <p>{{file}}</p>
+        <p>{{file.name}}</p>
+        <p>{{file.type}}</p>
+        <b-img :src="createURL(file)" :alt="file.name" title="file"></b-img>
+        <p>{{createURL(file)}}</p>
+      </b-row>
+      <b-row v-for='blob in blobs' no-gutters>
+        <p>Before Blob:</p>
+        <p>{{blob}}</p>
+        <!-- <p>{{blob.type}}</p> -->
+      </b-row>
+      <b-row v-for="file in newFiles" no-gutters>
+        <p>After File: </p>
+        <p>{{file}}</p>
+        <p>{{file.name}}</p>
+        <p>{{file.type}}</p>
+        <b-img :src="createURL(file)"></b-img>
+        <p>{{createURL(file)}}</p>
+      </b-row>
+      <b-row  no-gutters>
+        <p>After Blob: </p>
+        <p>{{newBlobs}}</p>
+        <!-- <p>{{blob.type}}</p> -->
+        <!-- <b-img :src="createURL(blob)"></b-img>
+        <p>{{createURL(blob)}}</p> -->
+      </b-row>
+    </div>
+    
+    <br>
+
     <!-- Select Semester -->
     <b-dropdown id="semesterSelect" variant="primary" :text="dropdownText" class="m-md-2">
       <b-dropdown-item @click='spring20(0)'>Spring 2020</b-dropdown-item>
@@ -562,7 +626,12 @@ export default /*class listPage extends Vue*/ {
       passwordType: 'password',
       dropdownVariant: 'dark',
       addMode: false,
-      modifyMode: false
+      modifyMode: false,
+      files: null,
+      blobs: null,
+      newBlobs: null,
+      newFiles: null,
+      numFiles: 0
     }
   },
   methods: {
@@ -1207,6 +1276,114 @@ export default /*class listPage extends Vue*/ {
           break;
       }
       return table_name;
+    },
+    createURL(file) {
+      let objectURL = URL.createObjectURL(file);
+      return objectURL;
+    },
+    toBlob() {
+      this.blobs = [];
+      for (let i = 0; i < this.files.length; i++) {
+        let text = "\"" + this.files[i].type + "\"";
+        let blob = new Blob([this.files[i]], {type : text});
+        this.blobs[i] = blob;
+      }
+      /* let text = "\"" + file.type + "\"";
+      let blob = new Blob([file], {type : text});
+      this.newFiles = this.toFile(blob, file.name, file.type);
+      return blob; */
+    },
+    /* toFile(blob, fileName, fileType) {
+      let text1 = "\"" + fileType + "\"";
+      let file = new File([blob], fileName, {type: text1});
+      return file;
+    }, */
+    toFile(blobs) {
+      for (let i = 0; i < blobs.length; i++) {
+        let text1 = "\"" + blobs[i].type + "\"";
+        let fileNum = i + 1;
+        let fileName = "file" + fileNum;
+        let file = new File([blobs[i]], fileName, {type: 'image/png'});
+        this.newFiles = [];
+        this.newFiles[i] = file;
+      }
+      /* let text1 = "\"" + blob.type + "\"";
+      let file = new File([blob], fileName, {type: text1});
+      return file; */
+    },
+    addFile() {
+      let blobSerial = JSON.stringify(this.blobs);
+      axios.get('http://localhost/ajaxFile.php', {
+        params: {
+          request: '0',
+          table_name: 'spring20',
+          username: 'dbAdmin',
+          password: 'Doodle6-Clothing',
+          files: blobSerial,
+        }
+      })
+      .then(response => {
+        alert(response.data);
+      })
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+      });
+    },
+    getFiles() {
+      axios.get('http://localhost/ajaxFile.php', {
+        params: {
+          request: '5',
+          table_name: 'spring20',
+          username: 'dbAdmin',
+          password: 'Doodle6-Clothing',
+        }
+      })
+      .then(response => {
+        //alert(response.data);
+        this.toFile(response.data);
+        //this.newBlobs = response.data;
+        this.decodeJSON(response.data);
+      })
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+      });
+    },
+    decodeJSON(data) {
+      for (let i = 0; i < data.length; i++) {
+        //let item = JSON.parse(data[i]);
+        this.newBlobs = [];
+        this.newBlobs[i] = data[i];
+      }
     }
   }/*,
   created() {

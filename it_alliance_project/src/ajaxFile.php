@@ -3,8 +3,8 @@ header("Access-Control-Allow-Origin: *");
 //include ($_SERVER['DOCUMENT_ROOT']."/config.php");
 
 $request = "1";
-if(isset($_GET['request'])){
-  $request = $_GET['request'];
+if(isset($_GET["request"])){
+  $request = $_GET["request"];
 }
 
 if(isset($_GET['table_name'])){
@@ -25,6 +25,32 @@ if ($mysqli->connect_errno) {
   printf("Connect failed: %s\n", $mysqli->connect_error);
   exit();
 }
+
+// addFile()
+if ($request == "0") {
+  $files = $_GET["files"];
+
+  $mysqli->query("UPDATE ".$table_name." SET files='".$files."' WHERE id=1");
+
+  echo $files;
+}
+
+// getFiles()
+if ($request == "5") {
+  if ($projectData = $mysqli->query("SELECT files FROM ".$table_name." WHERE id=1")) {
+    $response = array();
+    
+    while($row = mysqli_fetch_assoc($projectData)){
+    
+       $response[] = $row;
+    }
+    
+    echo json_encode($response);
+
+    $projectData->close();
+  }
+}
+
 
 // allRecords()
 if ($request == "1") {
