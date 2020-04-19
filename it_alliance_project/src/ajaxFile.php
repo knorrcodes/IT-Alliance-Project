@@ -26,18 +26,25 @@ if ($mysqli->connect_errno) {
   exit();
 }
 
-// addFile()
-if ($request == "0") {
-  $files = $_GET["files"];
+// uploadFiles()
+if ($request == "5") {
+  $semester = $_GET["semester"];
+  $project_id = $_GET["project_id"];
+  $long_blob = $_GET["long_blob"];
+  $file_name = $_GET["file_name"];
+  $file_type = $_GET["file_type"];
 
-  $mysqli->query("UPDATE ".$table_name." SET files='".$files."' WHERE id=1");
+  $mysqli->query("INSERT INTO ".$table_name." (semester,project_id,long_blob,file_name,file_type) VALUES ('".$semester."','".$project_id."','".$long_blob."','".$file_name."','".$file_type."')");
 
-  echo $files;
+  echo "Insert Successful";
 }
 
 // getFiles()
-if ($request == "5") {
-  if ($projectData = $mysqli->query("SELECT files FROM ".$table_name." WHERE id=1")) {
+if ($request == "6") {
+  $semester = $_GET["semester"];
+  $project_id = $_GET["project_id"];
+  
+  if ($projectData = $mysqli->query("SELECT * FROM ".$table_name." WHERE semester='".$semester."' and project_id='".$project_id."'")) {
     $response = array();
     
     while($row = mysqli_fetch_assoc($projectData)){
@@ -50,7 +57,6 @@ if ($request == "5") {
     $projectData->close();
   }
 }
-
 
 // allRecords()
 if ($request == "1") {

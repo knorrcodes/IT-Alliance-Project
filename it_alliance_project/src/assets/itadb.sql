@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Apr 18, 2020 at 12:16 AM
+-- Generation Time: Apr 19, 2020 at 08:01 AM
 -- Server version: 8.0.18
 -- PHP Version: 7.3.12
 
@@ -21,6 +21,33 @@ SET time_zone = "+00:00";
 --
 -- Database: `itadb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blobstorage`
+--
+
+DROP TABLE IF EXISTS `blobstorage`;
+CREATE TABLE IF NOT EXISTS `blobstorage` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `semester` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `long_blob` longblob NOT NULL,
+  `file_name` text NOT NULL,
+  `file_type` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `blobstorage`
+--
+
+INSERT INTO `blobstorage` (`id`, `semester`, `project_id`, `long_blob`, `file_name`, `file_type`) VALUES
+(1, 'spring20', 1, 0x7b7d, 'download1.jfif', 'image/jpeg'),
+(5, 'spring20', 1, 0x7b7d, 'tree-736885__340.webp', 'image/webp'),
+(4, 'spring20', 1, 0x7b7d, 'download.png', 'image/png'),
+(6, 'spring20', 1, 0x7b7d, 'download3.jfif', 'image/jpeg');
 
 -- --------------------------------------------------------
 
@@ -69,6 +96,7 @@ CREATE TABLE IF NOT EXISTS `spring20` (
   `tshirt_m` int(11) NOT NULL,
   `tshirt_l` int(11) NOT NULL,
   `tshirt_xl` int(11) NOT NULL,
+  `files` json DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -76,10 +104,10 @@ CREATE TABLE IF NOT EXISTS `spring20` (
 -- Dumping data for table `spring20`
 --
 
-INSERT INTO `spring20` (`id`, `priority`, `status`, `semester`, `name`, `start_date`, `projected_date`, `completed_date`, `description`, `client`, `client_email`, `team_member_names`, `tshirt_s`, `tshirt_m`, `tshirt_l`, `tshirt_xl`) VALUES
-(1, '3 - Normal', 'In Progress', 'Spring 2020', 'ITA Portal', '2020-01-20', '2020-04-28', NULL, 'The purpose of this project is to create a website to access information about the ITA project class.', 'Wendy Wooldridge', 'wwooldridg@usi.edu', 'Darrin Knorr, Joe Massaro, Bassim Alamer, Josh Martin', 0, 1, 0, 0),
-(2, '3 - Normal', 'Proposed', '', 'AI Chatbot', '2020-01-20', '2020-04-28', NULL, 'AI ChatBot for Customer Serice with SMS Text messenger Bot', 'Unknown', 'Unknown', 'Albert Huang, Austin Steele, Edward Yevincy, Quentin Peters, Elizabeth Fleming', 0, 0, 0, 0),
-(3, '3 - Normal', 'Proposed', 'Spring 2020', 'Champion Labs', '2020-01-20', '2020-04-28', '0000-00-00', 'Champion Labs', 'Unknown', 'Unknown', 'Payton Sharpe, Joshua Joines, Hans Lagenour, Austin Garrison, Nicholas Scheller', 0, 0, 0, 0);
+INSERT INTO `spring20` (`id`, `priority`, `status`, `semester`, `name`, `start_date`, `projected_date`, `completed_date`, `description`, `client`, `client_email`, `team_member_names`, `tshirt_s`, `tshirt_m`, `tshirt_l`, `tshirt_xl`, `files`) VALUES
+(1, '3 - Normal', 'In Progress', 'Spring 2020', 'ITA Portal', '2020-01-20', '2020-04-28', NULL, 'The purpose of this project is to create a website to access information about the ITA project class.', 'Wendy Wooldridge', 'wwooldridg@usi.edu', 'Darrin Knorr, Joe Massaro, Bassim Alamer, Josh Martin', 0, 1, 0, 0, '[{}, {}]'),
+(2, '3 - Normal', 'Proposed', '', 'AI Chatbot', '2020-01-20', '2020-04-28', NULL, 'AI ChatBot for Customer Serice with SMS Text messenger Bot', 'Unknown', 'Unknown', 'Albert Huang, Austin Steele, Edward Yevincy, Quentin Peters, Elizabeth Fleming', 0, 0, 0, 0, NULL),
+(3, '3 - Normal', 'Proposed', 'Spring 2020', 'Champion Labs', '2020-01-20', '2020-04-28', '0000-00-00', 'Champion Labs', 'Unknown', 'Unknown', 'Payton Sharpe, Joshua Joines, Hans Lagenour, Austin Garrison, Nicholas Scheller', 0, 0, 0, 0, NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -31,49 +31,51 @@
         ></b-form-file>
       </b-row>
       <b-row no-gutters>
-        <b-button v-if='files' @click='toBlob()'>Upload</b-button>
-        <b-button v-if='blobs' @click='addFile()'>Add File</b-button>
-        <b-button @click='getFiles()'>Get Files</b-button>
+        <b-button v-if='files' @click='toBlob()'>Covert to Blobs</b-button>
+        <b-button v-if='long_blobs' @click='exportBlobs()'>Export Blobs</b-button>
+        <b-button @click='importBlobs()'>Import Blobs</b-button>
       </b-row>
       <!-- <b-row v-for='file in files' no-gutters>
         <div class="mt-3 ml-5">Selected file(s): {{ file ? file.name : '' }}</div>
       </b-row> -->
       <b-row v-if='files' no-gutters>
         <p>Files:</p>
-        <p>{{files.length}}</p>
-        <p>{{files}}</p>
+        <p class="ml-2">{{files.length}}</p>
+        <p class="ml-2">{{files}}</p>
       </b-row>
 
       <b-row v-if='blobs' no-gutters>
         <p>Blobs:</p>
-        <p>{{blobs.length}}</p>
-        <p>{{blobs}}</p>
+        <p class="ml-2">{{blobs.length}}</p>
+        <p class="ml-2">{{blobs}}</p>
       </b-row>
 
-      <b-row v-for='file in files' no-gutters>
+      <b-row v-if='files' v-for='file in files' no-gutters>
         <p>Before File:</p>
         <p>{{file}}</p>
-        <p>{{file.name}}</p>
-        <p>{{file.type}}</p>
-        <b-img :src="createURL(file)" :alt="file.name" title="file"></b-img>
-        <p>{{createURL(file)}}</p>
+        <p class="ml-2">{{file.name}}</p>
+        <p class="ml-2">{{file.type}}</p>
+        <b-img class="ml-2" :src="createURL(file)" :alt="file.name" title="file"></b-img>
+        <p class="ml-2">{{createURL(file)}}</p>
       </b-row>
-      <b-row v-for='blob in blobs' no-gutters>
+      <b-row v-if='long_blobs' v-for='blob in long_blobs' no-gutters>
         <p>Before Blob:</p>
-        <p>{{blob}}</p>
-        <!-- <p>{{blob.type}}</p> -->
+        <p class="ml-2">{{blob}}</p>
+        <!-- <p class="ml-2">{{blob.long_blob.text()}}</p> -->
       </b-row>
-      <b-row v-for="file in newFiles" no-gutters>
+      <b-row v-if='newFiles' v-for='file in newFiles' no-gutters>
         <p>After File: </p>
-        <p>{{file}}</p>
-        <p>{{file.name}}</p>
-        <p>{{file.type}}</p>
-        <b-img :src="createURL(file)"></b-img>
-        <p>{{createURL(file)}}</p>
+        <p class="ml-2">{{file}}</p>
+        <p class="ml-2">{{file.name}}</p>
+        <p class="ml-2">{{file.type}}</p>
+        <b-img class="ml-2" :src="createURL(file)"></b-img>
+        <p class="ml-2">{{createURL(file)}}</p>
       </b-row>
-      <b-row  no-gutters>
+      <b-row v-if='new_long_blobs' v-for='newBlob in new_long_blobs'  no-gutters>
         <p>After Blob: </p>
-        <p>{{newBlobs}}</p>
+        <p class="ml-2">{{newBlob}}</p>
+        <!-- <p class="ml-2">{{blob.long_blob.text()}}</p> -->
+        <p class="ml-2">{{new_long_blobs.indexOf(newBlob)}}</p>
         <!-- <p>{{blob.type}}</p> -->
         <!-- <b-img :src="createURL(blob)"></b-img>
         <p>{{createURL(blob)}}</p> -->
@@ -631,7 +633,16 @@ export default /*class listPage extends Vue*/ {
       blobs: null,
       newBlobs: null,
       newFiles: null,
-      numFiles: 0
+      numFiles: 0,
+      long_blob: {
+        semester: null,
+        project_id: null,
+        long_blob: null,
+        file_name: null,
+        file_type: null
+      },
+      long_blobs: null,
+      new_long_blobs: null
     }
   },
   methods: {
@@ -1282,22 +1293,32 @@ export default /*class listPage extends Vue*/ {
       return objectURL;
     },
     toBlob() {
-      this.blobs = [];
+      /* let blobForm = {
+        'semester': null,
+        'project_id': null,
+        'long_blob': null,
+        'file_name': null,
+        'file_type': null,
+      }; */
+      this.long_blobs = [];
       for (let i = 0; i < this.files.length; i++) {
         let text = "\"" + this.files[i].type + "\"";
         let blob = new Blob([this.files[i]], {type : text});
-        this.blobs[i] = blob;
+        let blobForm = {
+          'semester': 'spring20',
+          'project_id': 1,
+          'long_blob': blob,
+          'file_name': this.files[i].name,
+          'file_type': this.files[i].type,
+        };
+        /* blobForm.semester = 'spring20';
+        blobForm.project_id = 1;
+        blobForm.long_blob = blob;
+        blobForm.file_name = this.files[i].name;
+        blobForm.file_type = this.files[i].type; */
+        this.long_blobs[i] = blobForm;
       }
-      /* let text = "\"" + file.type + "\"";
-      let blob = new Blob([file], {type : text});
-      this.newFiles = this.toFile(blob, file.name, file.type);
-      return blob; */
     },
-    /* toFile(blob, fileName, fileType) {
-      let text1 = "\"" + fileType + "\"";
-      let file = new File([blob], fileName, {type: text1});
-      return file;
-    }, */
     toFile(blobs) {
       for (let i = 0; i < blobs.length; i++) {
         let text1 = "\"" + blobs[i].type + "\"";
@@ -1311,51 +1332,58 @@ export default /*class listPage extends Vue*/ {
       let file = new File([blob], fileName, {type: text1});
       return file; */
     },
-    addFile() {
-      let blobSerial = JSON.stringify(this.blobs);
-      axios.get('http://localhost/ajaxFile.php', {
-        params: {
-          request: '0',
-          table_name: 'spring20',
-          username: 'dbAdmin',
-          password: 'Doodle6-Clothing',
-          files: blobSerial,
-        }
-      })
-      .then(response => {
-        alert(response.data);
-      })
-      .catch(error => {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+    exportBlobs() {
+      for (let i = 0; i < this.long_blobs.length; i++) {
+        axios.get('http://localhost/ajaxFile.php', {
+          params: {
+            request: '5',
+            table_name: 'blobstorage',
+            username: 'dbAdmin',
+            password: 'Doodle6-Clothing',
+            semester: this.long_blobs[i].semester,
+            project_id: this.long_blobs[i].project_id,
+            long_blob: this.long_blobs[i].long_blob,
+            file_name: this.long_blobs[i].file_name,
+            file_type: this.long_blobs[i].file_type
+          }
+        })
+        .then(response => {
+          alert(response.data);
+        })
+        .catch(error => {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+        });
+      }
     },
-    getFiles() {
+    importBlobs() {
       axios.get('http://localhost/ajaxFile.php', {
         params: {
-          request: '5',
-          table_name: 'spring20',
+          request: '6',
+          table_name: 'blobstorage',
           username: 'dbAdmin',
           password: 'Doodle6-Clothing',
+          semester: 'spring20',
+          project_id: 1
         }
       })
       .then(response => {
         //alert(response.data);
-        this.toFile(response.data);
+        //this.toFile(response.data);
         //this.newBlobs = response.data;
         this.decodeJSON(response.data);
       })
@@ -1379,11 +1407,49 @@ export default /*class listPage extends Vue*/ {
       });
     },
     decodeJSON(data) {
+      /* let blobForm = {
+        'semester': null,
+        'project_id': null,
+        'long_blob': null,
+        'file_name': null,
+        'file_type': null,
+      }; */
+      this.new_long_blobs = [];
       for (let i = 0; i < data.length; i++) {
-        //let item = JSON.parse(data[i]);
-        this.newBlobs = [];
-        this.newBlobs[i] = data[i];
+        let blobForm = {
+        'semester': data[i].semester,
+        'project_id': data[i].project_id,
+        'long_blob': data[i].long_blob,
+        'file_name': data[i].file_name,
+        'file_type': data[i].file_type,
+      };
+        /* blobForm.semester = data[i].semester;
+        blobForm.project_id = data[i].project_id;
+        blobForm.long_blob = data[i].long_blob;
+        blobForm.file_name = data[i].file_name;
+        blobForm.file_type = data[i].file_type; */
+        //let blobForm = this.long_blob;
+        this.new_long_blobs[i] = blobForm;
       }
+      /* this.long_blob.semester = null;
+      this.long_blob.project_id = null;
+      this.long_blob.long_blob = null;
+      this.long_blob.file_name = null;
+      this.long_blob.file_type = null; */
+
+      //let x = data.split('"');
+      //let array = x[3];
+      /*let x = data[0].files;
+      this.newBlobs = [];
+      for (let i = 0; i < x.length; i++) {
+        this.newBlobs[i] = x[i];
+      }*/
+      /* this.newBlobs = [];
+      this.newBlobs[0] = data; */
+      //x[0] = data.files;
+    },
+    typeOf(value) {
+      return typeof value;
     }
   }/*,
   created() {
