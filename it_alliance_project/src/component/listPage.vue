@@ -34,6 +34,7 @@
         <b-button v-if='files' @click='toBlob()'>Covert to Blobs</b-button>
         <b-button v-if='long_blobs' @click='exportBlobs()'>Export Blobs</b-button>
         <b-button @click='importBlobs()'>Import Blobs</b-button>
+        <b-button v-if='new_long_blobs' @click='toFile()'>Convert to Files</b-button>
       </b-row>
       <!-- <b-row v-for='file in files' no-gutters>
         <div class="mt-3 ml-5">Selected file(s): {{ file ? file.name : '' }}</div>
@@ -52,24 +53,16 @@
 
       <b-row v-if='files' v-for='file in files' no-gutters>
         <p>Before File:</p>
-        <p>{{file}}</p>
-        <p class="ml-2">{{file.name}}</p>
+        <p class="ml-2">{{file}}</p>
+        <!-- <p class="ml-2">{{file.name}}</p>
         <p class="ml-2">{{file.type}}</p>
         <b-img class="ml-2" :src="createURL(file)" :alt="file.name" title="file"></b-img>
-        <p class="ml-2">{{createURL(file)}}</p>
+        <p class="ml-2">{{createURL(file)}}</p> -->
       </b-row>
       <b-row v-if='long_blobs' v-for='blob in long_blobs' no-gutters>
         <p>Before Blob:</p>
         <p class="ml-2">{{blob}}</p>
         <!-- <p class="ml-2">{{blob.long_blob.text()}}</p> -->
-      </b-row>
-      <b-row v-if='newFiles' v-for='file in newFiles' no-gutters>
-        <p>After File: </p>
-        <p class="ml-2">{{file}}</p>
-        <p class="ml-2">{{file.name}}</p>
-        <p class="ml-2">{{file.type}}</p>
-        <b-img class="ml-2" :src="createURL(file)"></b-img>
-        <p class="ml-2">{{createURL(file)}}</p>
       </b-row>
       <b-row v-if='new_long_blobs' v-for='newBlob in new_long_blobs'  no-gutters>
         <p>After Blob: </p>
@@ -79,6 +72,14 @@
         <!-- <p>{{blob.type}}</p> -->
         <!-- <b-img :src="createURL(blob)"></b-img>
         <p>{{createURL(blob)}}</p> -->
+      </b-row>
+      <b-row v-if='newFiles' v-for='file in newFiles' no-gutters>
+        <p>After File: </p>
+        <p class="ml-2">{{file}}</p>
+        <!-- <p class="ml-2">{{file.name}}</p> -->
+        <!-- <p class="ml-2">{{file.type}}</p> -->
+        <<!-- b-img class="ml-2" :src="createURL(file)"></<!--> -->
+        <!-- <p class="ml-2">{{createURL(file)}}</p> -->
       </b-row>
     </div>
     
@@ -1293,13 +1294,6 @@ export default /*class listPage extends Vue*/ {
       return objectURL;
     },
     toBlob() {
-      /* let blobForm = {
-        'semester': null,
-        'project_id': null,
-        'long_blob': null,
-        'file_name': null,
-        'file_type': null,
-      }; */
       this.long_blobs = [];
       for (let i = 0; i < this.files.length; i++) {
         let text = "\"" + this.files[i].type + "\"";
@@ -1311,26 +1305,18 @@ export default /*class listPage extends Vue*/ {
           'file_name': this.files[i].name,
           'file_type': this.files[i].type,
         };
-        /* blobForm.semester = 'spring20';
-        blobForm.project_id = 1;
-        blobForm.long_blob = blob;
-        blobForm.file_name = this.files[i].name;
-        blobForm.file_type = this.files[i].type; */
         this.long_blobs[i] = blobForm;
       }
     },
-    toFile(blobs) {
-      for (let i = 0; i < blobs.length; i++) {
-        let text1 = "\"" + blobs[i].type + "\"";
-        let fileNum = i + 1;
-        let fileName = "file" + fileNum;
-        let file = new File([blobs[i]], fileName, {type: 'image/png'});
-        this.newFiles = [];
+    toFile() {
+      this.newFiles = [];
+      for (let i = 0; i < this.new_long_blobs.length; i++) {
+        //let text1 = "\"" + new_long_blobs[i].file_type + "\"";
+        //let fileNum = i + 1;
+        //let fileName = "file" + fileNum;
+        let file = new File([this.new_long_blobs[i].long_blob], this.new_long_blobs[i].file_name, {type: this.new_long_blobs[i].file_type});
         this.newFiles[i] = file;
       }
-      /* let text1 = "\"" + blob.type + "\"";
-      let file = new File([blob], fileName, {type: text1});
-      return file; */
     },
     exportBlobs() {
       for (let i = 0; i < this.long_blobs.length; i++) {
