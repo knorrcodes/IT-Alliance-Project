@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Apr 19, 2020 at 08:01 AM
+-- Generation Time: Apr 21, 2020 at 12:19 AM
 -- Server version: 8.0.18
 -- PHP Version: 7.3.12
 
@@ -37,17 +37,15 @@ CREATE TABLE IF NOT EXISTS `blobstorage` (
   `file_name` text NOT NULL,
   `file_type` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `blobstorage`
 --
 
 INSERT INTO `blobstorage` (`id`, `semester`, `project_id`, `long_blob`, `file_name`, `file_type`) VALUES
-(1, 'spring20', 1, 0x7b7d, 'download1.jfif', 'image/jpeg'),
-(5, 'spring20', 1, 0x7b7d, 'tree-736885__340.webp', 'image/webp'),
-(4, 'spring20', 1, 0x7b7d, 'download.png', 'image/png'),
-(6, 'spring20', 1, 0x7b7d, 'download3.jfif', 'image/jpeg');
+(17, 'spring20', 1, 0x7b7d, 'download3.jfif', 'image/jpeg'),
+(16, 'spring20', 1, 0x7b7d, 'download1.jfif', 'image/jpeg');
 
 -- --------------------------------------------------------
 
