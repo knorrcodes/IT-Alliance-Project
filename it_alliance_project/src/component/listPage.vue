@@ -3,7 +3,7 @@
   <div class="listPage">
     <hr />
     <!-- <br /> -->
-    <div v-if="false">
+    <!-- <div>
       <h1>Spring 2020</h1>
         <ul>
           <li onclick="alert('Team name: IT Alliance \nMembers: Darrin Knorr, Joe Massaro, Bassim Alamer, Josh Martin \nSemester: Spring 2020')">IT Alliance Project</li>
@@ -15,11 +15,15 @@
         </ul>
 
       <br><br>
-    </div>
-    <h1 class="text-center">Projects by Semester</h1>
-    
+    </div> -->
+    <b-row no-gutters>
+      <h1 class="mx-auto">Projects by Semester</h1>
+    </b-row>
+    <hr />
+    <!-- File Testing -->
     <div>
-      <b-row no-gutters>
+      <!-- File Input Form -->
+      <!-- <b-row no-gutters>
         <b-form-file
           id="fileInput"
           v-model="files"
@@ -29,64 +33,56 @@
           class="mx-5"
           multiple
         ></b-form-file>
-      </b-row>
-      <b-row no-gutters>
+      </b-row> -->
+      <!-- File Buttons -->
+      <!-- <b-row no-gutters>
         <b-button v-if='files' @click='toBlob()'>Covert to Blobs</b-button>
         <b-button v-if='long_blobs' @click='exportBlobs()'>Export Blobs</b-button>
         <b-button @click='importBlobs()'>Import Blobs</b-button>
         <b-button v-if='new_long_blobs' @click='toFile()'>Convert to Files</b-button>
-      </b-row>
+      </b-row> -->
       <!-- <b-row v-for='file in files' no-gutters>
         <div class="mt-3 ml-5">Selected file(s): {{ file ? file.name : '' }}</div>
       </b-row> -->
-      <b-row v-if='files' no-gutters>
-        <p>Files:</p>
-        <p class="ml-2">{{files.length}}</p>
-        <p class="ml-2">{{files}}</p>
-      </b-row>
 
-      <!-- <b-row v-if='blobs' no-gutters>
-        <p>Blobs:</p>
-        <p class="ml-2">{{blobs.length}}</p>
-        <p class="ml-2">{{blobs}}</p>
-      </b-row> -->
-
-      <b-row v-if='files' v-for='file in files' no-gutters>
+      <!-- File 1 -->
+      <!-- <b-row v-if='files' v-for='file in files' no-gutters>
         <p>Before File:</p>
         <p class="ml-2">{{file}}</p>
         <p class="ml-2">{{file.name}}</p>
-        <!-- <p class="ml-2">{{file.type}}</p>
+        <p class="ml-2">{{file.type}}</p>
         <b-img class="ml-2" :src="createURL(file)" :alt="file.name" title="file"></b-img>
-        <p class="ml-2">{{createURL(file)}}</p> -->
-      </b-row>
-      <b-row v-if='long_blobs' v-for='blob in long_blobs' no-gutters>
+        <p class="ml-2">{{createURL(file)}}</p>
+      </b-row> -->
+      <!-- Blob 1 -->
+      <!-- <b-row v-if='long_blobs' v-for='blob in long_blobs' no-gutters>
         <p>Before Blob:</p>
         <p class="ml-2">{{blob}}</p>
         <p class="ml-2">{{blob.long_blob}}</p>
         <b-img class="ml-2" :src="createURL(blob.long_blob)" :alt="blob.name" title="blob"></b-img>
-      </b-row>
-      <b-row v-if='new_long_blobs' v-for='newBlob in new_long_blobs'  no-gutters>
+      </b-row> -->
+      <!-- Blob 2 -->
+      <!-- <b-row v-if='new_long_blobs' v-for='newBlob in new_long_blobs'  no-gutters>
         <p>After Blob: </p>
         <p class="ml-2">{{newBlob}}</p>
-        <!-- <p class="ml-2">{{blob.long_blob.text()}}</p> -->
+        <p class="ml-2">{{blob.long_blob.text()}}</p>
         <p class="ml-2">{{new_long_blobs.indexOf(newBlob)}}</p>
         <p class="ml-2">{{newBlob.long_blob}}</p>
         <b-img :src="createURL(newBlob.long_blob)" :alt="newBlob.name"></b-img>
-        <!-- <p class="ml-2">{{ createURL(newBlob.long_blob) }}</p> -->
+        <p class="ml-2">{{ createURL(newBlob.long_blob) }}</p>
         <b-button @click='imageView(newBlob.id)' class="ml-2">View Image</b-button>
-      </b-row>
-      <b-row v-if='newFiles' v-for='file in newFiles' no-gutters>
+      </b-row> -->
+      <!-- File 2 -->
+      <!-- <b-row v-if='newFiles' v-for='file in newFiles' no-gutters>
         <p>After File: </p>
         <p class="ml-2">{{file}}</p>
         <p class="ml-2">{{file.name}}</p>
         <p class="ml-2">{{file.type}}</p>
         <b-img class="ml-2" :src="createURL(file)"></b-img>
-        <!-- <p class="ml-2">{{createURL(file)}}</p> -->
-      </b-row>
+        <p class="ml-2">{{createURL(file)}}</p>
+      </b-row> -->
     </div>
     
-    <br>
-
     <!-- Select Semester -->
     <b-dropdown id="semesterSelect" variant="primary" :text="dropdownText" class="m-md-2">
       <b-dropdown-item @click='spring20(0)'>Spring 2020</b-dropdown-item>
@@ -688,8 +684,8 @@ export default /*class listPage extends Vue*/ {
     },
     addRecord(evt) {
       evt.preventDefault();
-      let completedDate = '';
-      if (this.addForm.completed_date != '') {
+      let completedDate = null;
+      if (this.addForm.completed_date != '' && this.addForm.completed_date != null) {
         completedDate = this.addForm.completed_date.toISOString().substring(0,10);
       }
 
@@ -768,6 +764,11 @@ export default /*class listPage extends Vue*/ {
       }
     },
     updateRecord() {
+      let completedDate = null;
+      if (this.addForm.completed_date != '' && this.addForm.completed_date != null) {
+        completedDate = this.addForm.completed_date.toISOString().substring(0,10);
+      }
+      
       if (this.loggedIn && this.modifyMode) {
         axios.get('http://localhost/ajaxFile.php', {
           params: {
@@ -782,7 +783,7 @@ export default /*class listPage extends Vue*/ {
             name: this.addForm.name,
             start_date: this.addForm.start_date.toISOString().substring(0,10),
             projected_date: this.addForm.projected_date.toISOString().substring(0,10),
-            completed_date: this.addForm.completed_date.toISOString().substring(0,10),
+            completed_date: completedDate,
             description: this.addForm.description,
             client: this.addForm.client,
             client_email: this.addForm.client_email,
@@ -1404,7 +1405,8 @@ export default /*class listPage extends Vue*/ {
       }; */
       this.new_long_blobs = [];
       for (let i = 0; i < data.length; i++) {
-        let blob = new Blob([JSON.parse(data[i].long_blob)], {type: data[i].file_type});
+        //let blob = new Blob([JSON.parse(data[i].long_blob)], {type: data[i].file_type});
+        let blob = JSON.parse(data[i].long_blob);
         let blobForm = {
         'id': data[i].id,
         'semester': data[i].semester,

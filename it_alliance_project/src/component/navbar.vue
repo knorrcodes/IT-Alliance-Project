@@ -47,14 +47,14 @@
         </li>
         <li class="nav-item">
           <router-link :to="{ name: 'listPage' }">
-            <a class="nav-link" href="#">List</a>
+            <a class="nav-link" href="#">Projects</a>
           </router-link>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <router-link to="/login">
             <a class="nav-link" href="#">Login</a>
           </router-link>
-        </li>
+        </li> -->
       </ul>
     </nav>
   </div>

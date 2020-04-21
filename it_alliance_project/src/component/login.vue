@@ -1,19 +1,21 @@
 <template>
   <div class="login">
     <hr />
+    <b-row no-gutters>
+      <h1 class="mx-auto">Login Page</h1>
+    </b-row>
+    <hr />
 
     <div class="homeButton">
-      <br />
-      <br />
       <label for="uname">Username:</label>
       <input type="text" id="uname" class="ml-1" />
       <br />
       <label for="pword">Password:</label>
       <input type="password" id="pword" class="mt-1 ml-1" />
       <br />
-      <router-link to="/" tag="button" id="home-button">Create Account</router-link>
-      <button v-if="this.$parent.authenticated" v-on:click="logout()" id="logout-button">Logout</button>
-      <button v-else v-on:click="login()" id="login-button">Login</button>
+      <!-- <router-link to="/" tag="button" id="home-button">Create Account</router-link> -->
+      <b-button v-if="this.$parent.authenticated" v-on:click="logout()" variant="primary" id="logout-button">Logout</b-button>
+      <b-button v-else v-on:click="login()" variant="primary" id="login-button">Login</b-button>
     </div>
   </div>
 </template>

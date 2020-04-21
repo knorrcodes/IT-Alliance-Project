@@ -2,7 +2,7 @@
   <div class="mainPage">
     <hr />
     <b-row no-gutters>
-      <h2 class="mx-auto">Popular Past Projects</h2>
+      <h1 class="mx-auto">Popular Past Projects</h1>
     </b-row>
     <hr />
 

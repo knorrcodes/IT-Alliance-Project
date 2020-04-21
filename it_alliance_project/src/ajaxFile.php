@@ -98,7 +98,9 @@ if ($request == "2") {
   $name = $_GET['name'];
   $start_date = $_GET['start_date'];
   $projected_date = $_GET['projected_date'];
-  $completed_date = $_GET['completed_date'];
+  if(isset($_GET["completed_date"])){
+    $completed_date = $_GET['completed_date'];
+  }
   $description = $_GET['description'];
   $client = $_GET['client'];
   $client_email = $_GET['client_email'];
@@ -111,7 +113,12 @@ if ($request == "2") {
   $projectData = $mysqli->query("SELECT * FROM ".$table_name." WHERE name='".$name."'");
 
   if(mysqli_num_rows($projectData) == 0){
-    $mysqli->query("INSERT INTO ".$table_name." (priority,status,semester,name,start_date,projected_date,completed_date,description,client,client_email,team_member_names,tshirt_s,tshirt_m,tshirt_l,tshirt_xl) VALUES('".$priority."','".$status."','".$semester."','".$name."','".$start_date."','".$projected_date."','".$completed_date."','".$description."','".$client."','".$client_email."','".$team_member_names."','".$tshirt_s."','".$tshirt_m."','".$tshirt_l."','".$tshirt_xl."')");
+    if(isset($completed_date)){
+      $mysqli->query("INSERT INTO ".$table_name." (priority,status,semester,name,start_date,projected_date,completed_date,description,client,client_email,team_member_names,tshirt_s,tshirt_m,tshirt_l,tshirt_xl) VALUES('".$priority."','".$status."','".$semester."','".$name."','".$start_date."','".$projected_date."','".$completed_date."','".$description."','".$client."','".$client_email."','".$team_member_names."','".$tshirt_s."','".$tshirt_m."','".$tshirt_l."','".$tshirt_xl."')");
+    }
+    else{
+      $mysqli->query("INSERT INTO ".$table_name." (priority,status,semester,name,start_date,projected_date,description,client,client_email,team_member_names,tshirt_s,tshirt_m,tshirt_l,tshirt_xl) VALUES('".$priority."','".$status."','".$semester."','".$name."','".$start_date."','".$projected_date."','".$description."','".$client."','".$client_email."','".$team_member_names."','".$tshirt_s."','".$tshirt_m."','".$tshirt_l."','".$tshirt_xl."')");
+    }
     echo "Insert successfully";
   }else{
     echo "Project already exists.";
@@ -129,7 +136,9 @@ if ($request == "3") {
   $name = $_GET['name'];
   $start_date = $_GET['start_date'];
   $projected_date = $_GET['projected_date'];
-  $completed_date = $_GET['completed_date'];
+  if(isset($_GET["completed_date"])){
+    $completed_date = $_GET['completed_date'];
+  }
   $description = $_GET['description'];
   $client = $_GET['client'];
   $client_email = $_GET['client_email'];
@@ -139,7 +148,12 @@ if ($request == "3") {
   $tshirt_l = $_GET['tshirt_l'];
   $tshirt_xl = $_GET['tshirt_xl'];
 
-  $mysqli->query("UPDATE ".$table_name." SET priority='".$priority."',status='".$status."',semester='".$semester."',name='".$name."',start_date='".$start_date."',projected_date='".$projected_date."',completed_date='".$completed_date."',description='".$description."',client='".$client."',client_email='".$client_email."',team_member_names='".$team_member_names."',tshirt_s='".$tshirt_s."',tshirt_m='".$tshirt_m."',tshirt_l='".$tshirt_l."',tshirt_xl='".$tshirt_xl."' WHERE id=".$id);
+  if(isset($completed_date)){
+    $mysqli->query("UPDATE ".$table_name." SET priority='".$priority."',status='".$status."',semester='".$semester."',name='".$name."',start_date='".$start_date."',projected_date='".$projected_date."',completed_date='".$completed_date."',description='".$description."',client='".$client."',client_email='".$client_email."',team_member_names='".$team_member_names."',tshirt_s='".$tshirt_s."',tshirt_m='".$tshirt_m."',tshirt_l='".$tshirt_l."',tshirt_xl='".$tshirt_xl."' WHERE id=".$id);
+  }
+  else{
+    $mysqli->query("UPDATE ".$table_name." SET priority='".$priority."',status='".$status."',semester='".$semester."',name='".$name."',start_date='".$start_date."',projected_date='".$projected_date."',description='".$description."',client='".$client."',client_email='".$client_email."',team_member_names='".$team_member_names."',tshirt_s='".$tshirt_s."',tshirt_m='".$tshirt_m."',tshirt_l='".$tshirt_l."',tshirt_xl='".$tshirt_xl."' WHERE id=".$id);
+  }
 
   echo "Update Successful.";
 }
