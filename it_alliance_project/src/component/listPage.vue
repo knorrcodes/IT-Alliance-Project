@@ -689,78 +689,154 @@ export default /*class listPage extends Vue*/ {
         completedDate = this.addForm.completed_date.toISOString().substring(0,10);
       }
 
-      if(this.loggedIn == true && this.addMode == true){
-        axios.get('http://localhost/ajaxFile.php', {
-          params: {
-            request: '2',
-            table_name: this.addForm.table_name,
-            username: this.username,
-            password: this.password,
-            priority: this.addForm.priority,
-            status: this.addForm.status,
-            semester: this.addForm.semester,
-            name: this.addForm.name,
-            start_date: this.addForm.start_date.toISOString().substring(0,10),
-            projected_date: this.addForm.projected_date.toISOString().substring(0,10),
-            completed_date: completedDate,
-            description: this.addForm.description,
-            client: this.addForm.client,
-            client_email: this.addForm.client_email,
-            team_member_names: this.addForm.team_member_names,
-            tshirt_s: this.addForm.tshirt_s,
-            tshirt_m: this.addForm.tshirt_m,
-            tshirt_l: this.addForm.tshirt_l,
-            tshirt_xl: this.addForm.tshirt_xl
-          }
-        })
-        .then(response => {
-          // Fetch records
-          this.allRecords();
+      if (completedDate == null) {
+        if(this.loggedIn == true && this.addMode == true){
+          axios.get('http://localhost/ajaxFile.php', {
+            params: {
+              request: '2',
+              table_name: this.addForm.table_name,
+              username: this.username,
+              password: this.password,
+              priority: this.addForm.priority,
+              status: this.addForm.status,
+              semester: this.addForm.semester,
+              name: this.addForm.name,
+              start_date: this.addForm.start_date.toISOString().substring(0,10),
+              projected_date: this.addForm.projected_date.toISOString().substring(0,10),
+              description: this.addForm.description,
+              client: this.addForm.client,
+              client_email: this.addForm.client_email,
+              team_member_names: this.addForm.team_member_names,
+              tshirt_s: this.addForm.tshirt_s,
+              tshirt_m: this.addForm.tshirt_m,
+              tshirt_l: this.addForm.tshirt_l,
+              tshirt_xl: this.addForm.tshirt_xl
+            }
+          })
+          .then(response => {
+            // Fetch records
+            this.allRecords();
 
-          // Empty values
-          this.addForm.table_name = '';
-          this.addForm.id = 0;
-          this.addForm.priority = '3 - Normal';
-          this.addForm.status = 'Proposed';
-          this.addForm.semester = 'Select Semester';
-          this.addForm.name = '';
-          this.addForm.start_date = '';
-          this.addForm.projected_date = '';
-          this.addForm.completed_date = '';
-          this.addForm.description = '';
-          this.addForm.client = '';
-          this.addForm.client_email = '';
-          this.addForm.team_member_names = '';
-          this.addForm.tshirt_s = '0';
-          this.addForm.tshirt_m = '0';
-          this.addForm.tshirt_l = '0';
-          this.addForm.tshirt_xl = '0';
+            // Empty values
+            this.addForm.table_name = '';
+            this.addForm.id = 0;
+            this.addForm.priority = '3 - Normal';
+            this.addForm.status = 'Proposed';
+            this.addForm.semester = 'Select Semester';
+            this.addForm.name = '';
+            this.addForm.start_date = '';
+            this.addForm.projected_date = '';
+            this.addForm.completed_date = '';
+            this.addForm.description = '';
+            this.addForm.client = '';
+            this.addForm.client_email = '';
+            this.addForm.team_member_names = '';
+            this.addForm.tshirt_s = '0';
+            this.addForm.tshirt_m = '0';
+            this.addForm.tshirt_l = '0';
+            this.addForm.tshirt_xl = '0';
 
-          // Turn Off Add Form
-          this.addMode = false;
+            // Turn Off Add Form
+            this.addMode = false;
 
-          alert(response.data);
-        })
-        .catch(error => {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
-          }
-          console.log(error.config);
-        });
-      }else{
-        this.updateRecord();
+            alert(response.data);
+          })
+          .catch(error => {
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) {
+              // The request was made but no response was received
+              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+              // http.ClientRequest in node.js
+              console.log(error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message);
+            }
+            console.log(error.config);
+          });
+        }else{
+          this.updateRecord();
+        }
+      }
+      else {
+        if(this.loggedIn == true && this.addMode == true){
+          axios.get('http://localhost/ajaxFile.php', {
+            params: {
+              request: '2',
+              table_name: this.addForm.table_name,
+              username: this.username,
+              password: this.password,
+              priority: this.addForm.priority,
+              status: this.addForm.status,
+              semester: this.addForm.semester,
+              name: this.addForm.name,
+              start_date: this.addForm.start_date.toISOString().substring(0,10),
+              projected_date: this.addForm.projected_date.toISOString().substring(0,10),
+              completed_date: completedDate,
+              description: this.addForm.description,
+              client: this.addForm.client,
+              client_email: this.addForm.client_email,
+              team_member_names: this.addForm.team_member_names,
+              tshirt_s: this.addForm.tshirt_s,
+              tshirt_m: this.addForm.tshirt_m,
+              tshirt_l: this.addForm.tshirt_l,
+              tshirt_xl: this.addForm.tshirt_xl
+            }
+          })
+          .then(response => {
+            // Fetch records
+            this.allRecords();
+
+            // Empty values
+            this.addForm.table_name = '';
+            this.addForm.id = 0;
+            this.addForm.priority = '3 - Normal';
+            this.addForm.status = 'Proposed';
+            this.addForm.semester = 'Select Semester';
+            this.addForm.name = '';
+            this.addForm.start_date = '';
+            this.addForm.projected_date = '';
+            this.addForm.completed_date = '';
+            this.addForm.description = '';
+            this.addForm.client = '';
+            this.addForm.client_email = '';
+            this.addForm.team_member_names = '';
+            this.addForm.tshirt_s = '0';
+            this.addForm.tshirt_m = '0';
+            this.addForm.tshirt_l = '0';
+            this.addForm.tshirt_xl = '0';
+
+            // Turn Off Add Form
+            this.addMode = false;
+
+            alert(response.data);
+          })
+          .catch(error => {
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) {
+              // The request was made but no response was received
+              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+              // http.ClientRequest in node.js
+              console.log(error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message);
+            }
+            console.log(error.config);
+          });
+        }else{
+          this.updateRecord();
+        }
       }
     },
     updateRecord() {
@@ -769,77 +845,152 @@ export default /*class listPage extends Vue*/ {
         completedDate = this.addForm.completed_date.toISOString().substring(0,10);
       }
       
-      if (this.loggedIn && this.modifyMode) {
-        axios.get('http://localhost/ajaxFile.php', {
-          params: {
-            request: '3',
-            table_name: this.addForm.table_name,
-            username: this.username,
-            password: this.password,
-            id: this.addForm.id,
-            priority: this.addForm.priority,
-            status: this.addForm.status,
-            semester: this.addForm.semester,
-            name: this.addForm.name,
-            start_date: this.addForm.start_date.toISOString().substring(0,10),
-            projected_date: this.addForm.projected_date.toISOString().substring(0,10),
-            completed_date: completedDate,
-            description: this.addForm.description,
-            client: this.addForm.client,
-            client_email: this.addForm.client_email,
-            team_member_names: this.addForm.team_member_names,
-            tshirt_s: this.addForm.tshirt_s,
-            tshirt_m: this.addForm.tshirt_m,
-            tshirt_l: this.addForm.tshirt_l,
-            tshirt_xl: this.addForm.tshirt_xl
-          }
-        })
-        .then(response => {
-          // Fetch records
-          this.allRecords();
+      if (completedDate == null) {
+        if (this.loggedIn && this.modifyMode) {
+          axios.get('http://localhost/ajaxFile.php', {
+            params: {
+              request: '3',
+              table_name: this.addForm.table_name,
+              username: this.username,
+              password: this.password,
+              id: this.addForm.id,
+              priority: this.addForm.priority,
+              status: this.addForm.status,
+              semester: this.addForm.semester,
+              name: this.addForm.name,
+              start_date: this.addForm.start_date.toISOString().substring(0,10),
+              projected_date: this.addForm.projected_date.toISOString().substring(0,10),
+              description: this.addForm.description,
+              client: this.addForm.client,
+              client_email: this.addForm.client_email,
+              team_member_names: this.addForm.team_member_names,
+              tshirt_s: this.addForm.tshirt_s,
+              tshirt_m: this.addForm.tshirt_m,
+              tshirt_l: this.addForm.tshirt_l,
+              tshirt_xl: this.addForm.tshirt_xl
+            }
+          })
+          .then(response => {
+            // Fetch records
+            this.allRecords();
 
-          // Empty values
-          this.addForm.table_name = '';
-          this.addForm.id = 0;
-          this.addForm.priority = '3 - Normal';
-          this.addForm.status = 'Proposed';
-          this.addForm.semester = 'Select Semester';
-          this.addForm.name = '';
-          this.addForm.start_date = '';
-          this.addForm.projected_date = '';
-          this.addForm.completed_date = '';
-          this.addForm.description = '';
-          this.addForm.client = '';
-          this.addForm.client_email = '';
-          this.addForm.team_member_names = '';
-          this.addForm.tshirt_s = '0';
-          this.addForm.tshirt_m = '0';
-          this.addForm.tshirt_l = '0';
-          this.addForm.tshirt_xl = '0';
+            // Empty values
+            this.addForm.table_name = '';
+            this.addForm.id = 0;
+            this.addForm.priority = '3 - Normal';
+            this.addForm.status = 'Proposed';
+            this.addForm.semester = 'Select Semester';
+            this.addForm.name = '';
+            this.addForm.start_date = '';
+            this.addForm.projected_date = '';
+            this.addForm.completed_date = '';
+            this.addForm.description = '';
+            this.addForm.client = '';
+            this.addForm.client_email = '';
+            this.addForm.team_member_names = '';
+            this.addForm.tshirt_s = '0';
+            this.addForm.tshirt_m = '0';
+            this.addForm.tshirt_l = '0';
+            this.addForm.tshirt_xl = '0';
 
-          // Turn Off Add Form
-          this.modifyMode = false;
+            // Turn Off Add Form
+            this.modifyMode = false;
 
-          alert(response.data);
-        })
-        .catch(error => {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
-          }
-          console.log(error.config);
-        });
+            alert(response.data);
+          })
+          .catch(error => {
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) {
+              // The request was made but no response was received
+              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+              // http.ClientRequest in node.js
+              console.log(error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message);
+            }
+            console.log(error.config);
+          });
+        }
+      }
+      else {
+        if (this.loggedIn && this.modifyMode) {
+          axios.get('http://localhost/ajaxFile.php', {
+            params: {
+              request: '3',
+              table_name: this.addForm.table_name,
+              username: this.username,
+              password: this.password,
+              id: this.addForm.id,
+              priority: this.addForm.priority,
+              status: this.addForm.status,
+              semester: this.addForm.semester,
+              name: this.addForm.name,
+              start_date: this.addForm.start_date.toISOString().substring(0,10),
+              projected_date: this.addForm.projected_date.toISOString().substring(0,10),
+              completed_date: completedDate,
+              description: this.addForm.description,
+              client: this.addForm.client,
+              client_email: this.addForm.client_email,
+              team_member_names: this.addForm.team_member_names,
+              tshirt_s: this.addForm.tshirt_s,
+              tshirt_m: this.addForm.tshirt_m,
+              tshirt_l: this.addForm.tshirt_l,
+              tshirt_xl: this.addForm.tshirt_xl
+            }
+          })
+          .then(response => {
+            // Fetch records
+            this.allRecords();
+
+            // Empty values
+            this.addForm.table_name = '';
+            this.addForm.id = 0;
+            this.addForm.priority = '3 - Normal';
+            this.addForm.status = 'Proposed';
+            this.addForm.semester = 'Select Semester';
+            this.addForm.name = '';
+            this.addForm.start_date = '';
+            this.addForm.projected_date = '';
+            this.addForm.completed_date = '';
+            this.addForm.description = '';
+            this.addForm.client = '';
+            this.addForm.client_email = '';
+            this.addForm.team_member_names = '';
+            this.addForm.tshirt_s = '0';
+            this.addForm.tshirt_m = '0';
+            this.addForm.tshirt_l = '0';
+            this.addForm.tshirt_xl = '0';
+
+            // Turn Off Add Form
+            this.modifyMode = false;
+
+            alert(response.data);
+          })
+          .catch(error => {
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) {
+              // The request was made but no response was received
+              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+              // http.ClientRequest in node.js
+              console.log(error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message);
+            }
+            console.log(error.config);
+          });
+        }
       }
     },
     deleteRecord(id) {
