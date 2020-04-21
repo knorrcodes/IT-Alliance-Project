@@ -45,40 +45,42 @@
         <p class="ml-2">{{files}}</p>
       </b-row>
 
-      <b-row v-if='blobs' no-gutters>
+      <!-- <b-row v-if='blobs' no-gutters>
         <p>Blobs:</p>
         <p class="ml-2">{{blobs.length}}</p>
         <p class="ml-2">{{blobs}}</p>
-      </b-row>
+      </b-row> -->
 
       <b-row v-if='files' v-for='file in files' no-gutters>
         <p>Before File:</p>
         <p class="ml-2">{{file}}</p>
-        <!-- <p class="ml-2">{{file.name}}</p>
-        <p class="ml-2">{{file.type}}</p>
+        <p class="ml-2">{{file.name}}</p>
+        <!-- <p class="ml-2">{{file.type}}</p>
         <b-img class="ml-2" :src="createURL(file)" :alt="file.name" title="file"></b-img>
         <p class="ml-2">{{createURL(file)}}</p> -->
       </b-row>
       <b-row v-if='long_blobs' v-for='blob in long_blobs' no-gutters>
         <p>Before Blob:</p>
         <p class="ml-2">{{blob}}</p>
-        <!-- <p class="ml-2">{{blob.long_blob.text()}}</p> -->
+        <p class="ml-2">{{blob.long_blob}}</p>
+        <b-img class="ml-2" :src="createURL(blob.long_blob)" :alt="blob.name" title="blob"></b-img>
       </b-row>
       <b-row v-if='new_long_blobs' v-for='newBlob in new_long_blobs'  no-gutters>
         <p>After Blob: </p>
         <p class="ml-2">{{newBlob}}</p>
         <!-- <p class="ml-2">{{blob.long_blob.text()}}</p> -->
         <p class="ml-2">{{new_long_blobs.indexOf(newBlob)}}</p>
-        <!-- <p>{{blob.type}}</p> -->
-        <!-- <b-img :src="createURL(blob)"></b-img>
-        <p>{{createURL(blob)}}</p> -->
+        <p class="ml-2">{{newBlob.long_blob}}</p>
+        <b-img :src="createURL(newBlob.long_blob)" :alt="newBlob.name"></b-img>
+        <!-- <p class="ml-2">{{ createURL(newBlob.long_blob) }}</p> -->
+        <b-button @click='imageView(newBlob.id)' class="ml-2">View Image</b-button>
       </b-row>
       <b-row v-if='newFiles' v-for='file in newFiles' no-gutters>
         <p>After File: </p>
         <p class="ml-2">{{file}}</p>
-        <!-- <p class="ml-2">{{file.name}}</p> -->
-        <!-- <p class="ml-2">{{file.type}}</p> -->
-        <<!-- b-img class="ml-2" :src="createURL(file)"></<!--> -->
+        <p class="ml-2">{{file.name}}</p>
+        <p class="ml-2">{{file.type}}</p>
+        <b-img class="ml-2" :src="createURL(file)"></b-img>
         <!-- <p class="ml-2">{{createURL(file)}}</p> -->
       </b-row>
     </div>
@@ -1402,10 +1404,12 @@ export default /*class listPage extends Vue*/ {
       }; */
       this.new_long_blobs = [];
       for (let i = 0; i < data.length; i++) {
+        let blob = new Blob([JSON.parse(data[i].long_blob)], {type: data[i].file_type});
         let blobForm = {
+        'id': data[i].id,
         'semester': data[i].semester,
         'project_id': data[i].project_id,
-        'long_blob': data[i].long_blob,
+        'long_blob': blob,
         'file_name': data[i].file_name,
         'file_type': data[i].file_type,
       };
@@ -1436,6 +1440,43 @@ export default /*class listPage extends Vue*/ {
     },
     typeOf(value) {
       return typeof value;
+    },
+    imageView(id) {
+      axios.get('http://localhost/ajaxFile.php', {
+        params: {
+          request: '7',
+          username: 'dbAdmin',
+          password: 'Doodle6-Clothing',
+          id: id
+        }
+      })
+      .then(response => {
+        //alert(response.data);
+        //return response.data;
+        let binaryData = [];
+        binaryData.push(response.data);
+        let url = this.createURL(new Blob([binaryData], {type: "image/jpeg"}));
+        //let url = this.createURL(response.data);
+        return url;
+      })
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+      });
     }
   }/*,
   created() {

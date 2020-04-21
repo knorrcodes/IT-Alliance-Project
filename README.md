@@ -52,19 +52,22 @@ Global privileges: Check all
 
 After creating admin account, log out and back in to dbAdmin. Then revoke all privileges from root user.
 
+Create a second user with only view privileges.
+User name: basic
+Host name: %
+Password: 5dSbxzQ9n0SLiVWG
+Authentication plugin: Native
+Global privileges: Data -> SELECT
+
 Create the database.
 Database name: itadb
 
-Create the table.
-Table name: project_table
-
-Column structure:
-#   Column Name         Type    Null    Extra
-1   id                  int(11) No      AUTO_INCREMENT, Primary Key
-2   name                text    No  
-3   description         text    No
-4   client              text    No
-5   team_member_names   text    No
+Import the tables.
+While viewing itadb, click Import
+The first words on the page should be "Importing into the database "itadb""
+Under File to Import, click Choose File
+Find the itadb.sql file in the src->assets folder of the it-alliance-project
+Click go at the bottom of the page
 
 Setup is complete. Type npm run serve in the VS Code console and try it out.
 ```

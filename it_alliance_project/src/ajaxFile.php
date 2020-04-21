@@ -58,6 +58,22 @@ if ($request == "6") {
   }
 }
 
+//imageView()
+if ($request == "7") {
+  $id = $_GET["id"];
+
+  $result = $mysqli->query("SELECT long_blob,file_type FROM blobStorage WHERE id=".$id);
+
+  $row = mysqli_fetch_array($result);
+
+  //header("Content-type: ".$row["file_type"]);
+
+  echo $row["long_blob"];
+
+  //echo '<b-img src="data:'.$row["file_type"].';base64,'.base64_encode( $row['long_blob'] ).'"/>';
+  //echo '"data:'.$row["file_type"].';base64,'.base64_encode( $row["long_blob"] ).'"';
+}
+
 // allRecords()
 if ($request == "1") {
   if ($projectData = $mysqli->query("SELECT * FROM ".$table_name)) {
