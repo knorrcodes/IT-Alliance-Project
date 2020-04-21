@@ -1322,7 +1322,7 @@ export default /*class listPage extends Vue*/ {
     },
     exportBlobs() {
       for (let i = 0; i < this.long_blobs.length; i++) {
-        axios.get('http://localhost/ajaxFile.php', {
+        axios.post('http://localhost/ajaxFile.php', {
           params: {
             request: '5',
             table_name: 'blobstorage',
