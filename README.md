@@ -41,6 +41,8 @@ After install, run WAMP program and make sure all services are running. Icon in 
 
 Left-click on the WAMP icon in the tray, click www directory. Place ajaxFile.php here.
 
+Also place src/assets/files folder here so the mainPage carousel can access the images.
+
 Left-click on the WAMP icon in the tray, click phpMyAdmin. Default login is root, no password.
 
 After logging in, set up a new user account.
