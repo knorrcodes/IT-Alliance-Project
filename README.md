@@ -33,6 +33,8 @@ https://bootstrap-vue.js.org/docs
 
 https://developer.okta.com/code/vue/
 
+https://vcalendar.io/
+
 ## WAMP Setup
 
 1. Download: https://sourceforge.net/projects/wampserver/
