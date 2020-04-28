@@ -394,7 +394,7 @@
     </b-form>
 
     <!-- Project List -->
-    <b-card no-body v-for='project in project_table'>
+    <b-card class="mt-3" no-body v-for='project in project_table'>
       <b-row no-gutters>
         <b-col md="6">
           <!-- Project Name -->
